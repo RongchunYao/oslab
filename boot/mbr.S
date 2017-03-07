@@ -48,7 +48,7 @@ next:
 	movw %ax,%ds
 	movw %ax,%es
 	movw %ax,%ss	
-	movl $0x8000, %esp 
+	movl $0x40000, %esp 
 	call boot_main
 
 loop:

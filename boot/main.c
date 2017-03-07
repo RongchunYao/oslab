@@ -40,18 +40,18 @@ void read_disk(uint8_t * paddr, int count, int offset)
 void boot_main()
 {
 	struct ELFHeader *elf;
-	struct ProgramHeader *ph;
-	elf=(struct ELFHeader*) 0x8000;
+	struct ProgramHeader *ph,*obj_ph;
+	elf=(struct ELFHeader*) 0x40000;
 	read_disk((uint8_t *)elf,4096,0);
 	ph = (struct ProgramHeader*)((uint8_t*)elf+elf->phoff);
-	int i;
-	uint8_t * temp1,* temp2;
-	for(i=0;i<(elf->phnum);i++)
+	uint8_t * i;
+	obj_ph=ph+elf->phnum;
+	for(;ph<obj_ph;ph++)
 	{
-		temp2=(uint8_t *)ph->paddr;
-		read_disk(temp2,ph->filesz,ph->off);
-		for(temp1=temp2+(ph->filesz);temp1<(temp2+ph->memsz);*temp1=0,temp1++);
+		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off);
+		for(i=(uint8_t *)(ph->paddr+(ph->filesz));i<(uint8_t *)(ph->paddr+(ph->memsz));*i=0,i++);
 	}
+while(1);
 	((void(*)(void))elf->entry)();
 	
 }
