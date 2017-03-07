@@ -3,10 +3,15 @@ VPATH = ./boot
 .PHONY: run 
 
 BOOT= boot
-MAKE= make run
+MY_GAME= game
+MAKE_MBR= make mbr
+MAKE_GAME= make game
 
 run:
-	cd $(BOOT) && $(MAKE)
-
+	cd $(BOOT) && $(MAKE_MBR)
+	cd $(MY_GAME) && $(MAKE_GAME)
+	cat ./boot/mbr ./game/game iso
+	qemu-system-i386 iso
 clean:
 	cd $(BOOT) && make clean
+	cd $(MY_GAME) && make clean

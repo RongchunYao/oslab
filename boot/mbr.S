@@ -6,7 +6,7 @@
 		(0xC0 | (((lim) >> 28) & 0xf)), (((base) >> 24) & 0xff)
 
 .globl start
-.globl main
+.globl boot_main
 
 start:  
 	cli
@@ -49,7 +49,7 @@ next:
 	movw %ax,%es
 	movw %ax,%ss	
 	movl $0x8000, %esp 
-	call main
+	call boot_main
 
 loop:
 	jmp loop 

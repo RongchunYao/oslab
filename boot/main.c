@@ -1,50 +1,67 @@
-typedef struct
-{
-	unsigned int   magic;
-	unsigned char  elf[12];
-	unsigned short type;
-	unsigned short machine;
-	unsigned int   version;
-	unsigned int   entry;
-	unsigned int   phoff;
-	unsigned int   shoff;
-	unsigned int   flags;
-	unsigned short ehsize;
-	unsigned short phentsize;
-	unsigned short phnum;
-	unsigned short shentsize;
-	unsigned short shnum;
-	unsigned short shstrndx;
-} elf_header;
+#define SECTSIZE 512
+#define uint8_t unsigned char
+#define uint32_t unsigned int
+#include "boot.h"
 
-typedef struct
+void waitdisk()
 {
-	unsigned int type;
-	unsigned int off;
-	unsigned int vaddr;
-	unsigned int paddr;
-	unsigned int filesz;
-	unsigned int memsz;
-	unsigned int flags;
-	unsigned int align;
-} p_header;
-
-static __inline uint8_t
-inb(int port)
-{
-	uint8_t data;
-	__asm __volatile("inb %w1,%0" : "=a" (data) : "d" (port));
-	return data;
+	 while ((inb(0x1F7) & 0xC0) != 0x40);
 }
 
-static __inline void
-outb(int port, uint8_t data)
+void
+readsect(void *dst, uint32_t offset)
 {
-	__asm __volatile("outb %0,%w1" : : "a" (data), "d" (port));
+    // wait for disk to be ready
+    waitdisk();
+    outb(0x1F2, 1);     // count = 1
+    outb(0x1F3, offset);    //address = offset | 0xe0000000
+    outb(0x1F4, offset >> 8);
+    outb(0x1F5, offset >> 16);
+    outb(0x1F6, (offset >> 24) | 0xE0);
+    outb(0x1F7, 0x20);  // cmd 0x20 - read sectors
+    // wait for disk to be ready
+    waitdisk();
+    // read a sector
+    insl(0x1F0, dst, SECTSIZE/4);
 }
-
-
-void main()
+void read_disk(uint8_t * paddr, int count, int offset)
 {
+	uint8_t * obj_paddr;
+	obj_paddr = paddr+count;
+	paddr-=offset %SECTSIZE;
+	int num=(offset/SECTSIZE)+1;
+	while(paddr<obj_paddr)
+	{
+		readsect(paddr,num);
+		paddr+=SECTSIZE; 
+		num++;
+	}
+}
+void boot_main()
+{
+	struct ELFHeader *elf;
+	struct ProgramHeader *ph;
+	elf=(struct ELFHeader*) 0x8000;
+	read_disk((uint8_t *)elf,4096,0);
+	ph = (struct ProgramHeader*)((uint8_t*)elf+elf->phoff);
+	int i;
+	uint8_t * temp1,* temp2;
+	for(i=0;i<(elf->phnum);i++)
+	{
+		temp2=(uint8_t *)ph->paddr;
+		read_disk(temp2,ph->filesz,ph->off);
+		for(temp1=temp2+(ph->filesz);temp1<(temp2+ph->memsz);*temp1=0,temp1++);
+	}
+	((void(*)(void))elf->entry)();
 	
 }
+
+
+
+
+
+
+
+
+
+
