@@ -1,7 +1,6 @@
 .PHONY: clean game
 game:
 	gcc -m32 -c game.c
-	gcc -m32 -o game game.o	
-
+	ld -o game -T game.lds game.o
 clean:
 	-rm game.o game

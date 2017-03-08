@@ -51,7 +51,6 @@ void boot_main()
 		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off);
 		for(i=(uint8_t *)(ph->paddr+(ph->filesz));i<(uint8_t *)(ph->paddr+(ph->memsz));*i=0,i++);
 	}
-while(1);
 	((void(*)(void))elf->entry)();
 	
 }
