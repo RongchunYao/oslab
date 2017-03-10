@@ -10,6 +10,10 @@
 
 start:  
 	cli
+
+	movw    $0x13, %ax        
+	int     $0x10             
+
 	mov $0x13, %ah
 	mov $0x01, %al
 	mov $0x00, %bh

@@ -1,6 +1,5 @@
 #define SECTSIZE 512
-#define uint8_t unsigned char
-#define uint32_t unsigned int
+#include "../include/common.h"
 #include "boot.h"
 
 void waitdisk()

@@ -1,3 +1,5 @@
+#ifndef _HAS_BOOT_
+#define _HAS_BOOT_
 struct ELFHeader {
     unsigned int   magic;
     unsigned char  elf[12];
@@ -51,3 +53,4 @@ outb(int port, uint8_t data)
 	__asm __volatile("outb %0,%w1" : : "a" (data), "d" (port));
 }
 
+#endif
