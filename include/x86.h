@@ -1,7 +1,12 @@
 #ifndef JOS_INC_X86_H
 #define JOS_INC_X86_H
 
-#include <inc/types.h>
+#include "common.h"
+
+int my_abort(const char *, int); 
+
+#define assert(cond) \
+	((cond) ? (0) : (my_abort(__FILE__, __LINE__)))
 
 static __inline void breakpoint(void) __attribute__((always_inline));
 static __inline uint8_t inb(int port) __attribute__((always_inline));

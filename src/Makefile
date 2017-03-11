@@ -1,12 +1,17 @@
 .PHONY: clean game
 
-OBJ_FILE = game/game.o game main.o device/serial.o main
+OBJ_FILE = game/game.o main.o
+OBJ_FILE += device/serial.o device/timer.o
+OBJ_FILE += lib/printk.o
+OBJ_FILE += irq/i8259.o irq/idt.o irq/irq.o irq/irq_handle.o
+
 
 game:
 	cd game && gcc -m32 -c game.c
 	gcc -m32 -c main.c
-	cd device && gcc -m32 -c serial.c
+	cd device && gcc -m32 -c serial.c timer.c
 	cd lib && gcc -m32 -c -fno-stack-protector printk.c
-	ld -o main -T game/game.lds game/game.o main.o device/serial.o lib/printk.o
+	cd irq && gcc -m32 -c i8259.c idt.c irq.S irq_handle.c
+	ld -o main -T game/game.lds $(OBJ_FILE)
 clean:
-	-rm $(OBJ_FILE)
+	-rm $(OBJ_FILE) main 

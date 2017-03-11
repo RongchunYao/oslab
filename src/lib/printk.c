@@ -54,9 +54,10 @@ void v_fprintf(void (*printer)(char), const char *ctl, void **args) {
 		if(temp[i]!='%') {temp_char=temp[i]; printer(temp_char); i++;}
 		else {i++; 
 		if(temp[i]=='%') {printer('%'); i++;}
-		else if(temp[i]=='c') {i++; temp_char=*((char *)(temp_arg)); printer(temp_char); (char **)temp_arg++; }
-		else if(temp[i]=='d'){i++; change(*(int *)(temp_arg),temp_str); v_fprintf(printer,temp_str,0); (int **)temp_arg++;}
-		else if(temp[i]=='x') {i++; change_x(*(unsigned int *)(temp_arg),temp_str); v_fprintf(printer,temp_str,0); (unsigned int **)temp_arg++;}
+		else if(temp[i]=='c') {i++; temp_char=*((char *)(temp_arg)); printer(temp_char); (void **)temp_arg++; }
+		else if(temp[i]=='d'){i++; change(*(int *)(temp_arg),temp_str); v_fprintf(printer,temp_str,0); (void **)temp_arg++;}
+		else if(temp[i]=='x') {i++; change_x(*(unsigned int *)(temp_arg),temp_str); v_fprintf(printer,temp_str,0); (void **)temp_arg++;}
+		else if(temp[i]=='s') {i++; v_fprintf(printer,*(const char **)temp_arg,0);  (void  **)temp_arg++;  }
 		else {v_fprintf(printer,"sorry, cannot support this now\n",0); break;}
 	}
 	}
