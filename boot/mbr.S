@@ -52,7 +52,7 @@ next:
 	movw %ax,%ds
 	movw %ax,%es
 	movw %ax,%ss	
-	movl $0x40000, %esp 
+	movl $0x80000, %esp 
 	call boot_main
 
 loop:

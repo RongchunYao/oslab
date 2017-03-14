@@ -40,7 +40,7 @@ void boot_main()
 {
 	struct ELFHeader *elf;
 	struct ProgramHeader *ph,*obj_ph;
-	elf=(struct ELFHeader*) 0x40000;
+	elf=(struct ELFHeader*)0x80000;
 	read_disk((uint8_t *)elf,4096,0);
 	ph = (struct ProgramHeader*)((uint8_t*)elf+elf->phoff);
 	uint8_t * i;

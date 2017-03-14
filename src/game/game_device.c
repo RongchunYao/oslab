@@ -1,8 +1,16 @@
-volatile int tick =0;
+#include "../../include/common.h"
+#define TRUE 1
+#define FALSE 0
+volatile static int tick =0;
 
 void timer_event()
 {
 tick ++;
+}
+
+int get_time()
+{
+return tick;
 }
 
 static volatile int key_code = 0;
@@ -21,22 +29,28 @@ press_key(int scan_code) {
 	for (i = 0; i < 26; i ++) {
 		if (letter_code[i] == scan_code) {
 			letter_pressed[i] = TRUE;
+			if(i==0||i==('s'-'a')||i==('d'-'a')||i==('w'-'a')||i==('r'-'a'))
+			{key_code=i;}
+ 		}
+	}
+	for (i = 0; i < 26; i ++) {
+		if (letter_code[i] == (scan_code-0x80)) {
+			letter_pressed[i] = FALSE;
 		}
 	}
 }
 
-void
-release_key(int index) {
-	letter_pressed[index] = FALSE;
-}
 
 int last_key_code(void) {
 	return key_code;
 }
 
+void reset_last_key()
+{
+	key_code=0;
+}
 void
 keyboard_event(int code) {
-	key_code = code;
 	press_key(code);
 }
 

@@ -16,9 +16,10 @@ void irq_handle(struct TrapFrame *tf)
 	} else if (tf->irq == 1001) {
 		uint32_t code = inb(0x60);
 		uint32_t val = inb(0x61);
-		outb(0x61, val | 0x80);
+
+		outb(0x61, val | 0x80); //tell i8259 that have finished
 		outb(0x61, val);
-		printk("key code = %x\n",code);
+
 		do_keyboard(code);
 	}
 	else {printk("unhandled\n"); /*assert(0);*/}

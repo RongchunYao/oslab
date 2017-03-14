@@ -6,7 +6,7 @@ void change(int a,char * b)
 	char f[100];	
 	int i=0;
 	int temp=a;
-	if(temp==0) {b[0]='0';b[1]='\n'; return;}
+	if(temp==0) {b[0]='0';b[1]='\0'; return;}
 	if(temp<0) {b[i++]='-'; temp=-temp;}
 	while(temp)
 	{
@@ -26,7 +26,7 @@ void change_x(unsigned int a,char * b)
 	char f[100];	
 	int i=0;
 	unsigned int temp=a;
-	if(temp==0) {b[0]='0';b[1]='\n'; return;}
+	if(temp==0) {b[0]='0';b[1]=0; return;}
 	b[i++]='0';
 	b[i++]='x';
 	while(temp)
@@ -74,3 +74,10 @@ printk(const char *ctl, ...) {
 	v_fprintf(serial_out, ctl, args);
 }
 
+void my_memcpy(void *dest, const void *src, size_t size) {
+	asm volatile ("cld; rep movsb" : : "c"(size), "S"(src), "D"(dest));
+}
+
+void my_memset(void *dest, int data, size_t size) {
+	asm volatile ("cld; rep stosb" : : "c"(size), "a"(data), "D"(dest));
+}
