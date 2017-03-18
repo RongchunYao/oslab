@@ -1,36 +1,125 @@
 #define game_name "crazy snake"
 #define game_over "GAME OVER"
+#define game_win  "YOU WIN"
+#define DEBUG
 #include "../../include/common.h"
 #include "../../include/intr.h"
 void draw_string(const char *, int , int , int) ;
 void draw_big_string(const char*, int ,int , int);
+void draw_snake(int ,int ,int);
 void display_all();
 void reset_last_key();
+void srand(int);
+int rand();
 void init();
-
-struct snake
+int nr_snake;
+int win_or_lose;
+typedef struct
 {
 	int color;
 	int x;
 	int y;
-	snake* next;
-}
+}snake;
 
+
+snake ta[1001]; // ta[0] use as a temp
+
+snake tail;
 
 extern int last_key_code();
 extern int get_time();
 
 static int direction; //snake moving direction
-static int x;         //snake position  
-static int y;         //snake position
+static int x;         //food position  
+static int y;         //food position
+static int food_color; //food color
+
+void draw_whole_snake()
+{
+	int i;
+#ifdef DEBUG
+	printk("%d\n",nr_snake);
+#endif
+	for(i=1;i<=nr_snake;i++)
+	{
+#ifdef DEBUG
+		printk("%d,%d,%d\n",ta[i].x,ta[i].y,ta[i].color);
+#endif
+		draw_snake(ta[i].x,ta[i].y,ta[i].color);	
+	}	
+
+	draw_snake(x,y,food_color);
+}
+
+void make_food()
+{
+	x=96;
+	y=88;
+	food_color=4;
+}
+
+int do_move()
+{	
+	int i; int j;	
+	ta[0].x=ta[1].x;
+	ta[0].y=ta[1].y;
+	ta[0].color=ta[1].color;
+	tail.x=ta[nr_snake].x;	
+	tail.y=ta[nr_snake].y;
+	if(direction==0) {ta[1].y-=8; if(ta[1].y<0) {/*printk("1\n");*/return 0;}}
+	else if(direction==('s'-'a')){ta[1].x+=8; if(ta[1].x>=200) {/*printk("2\n");*/ return 0;} }
+	else if(direction==('d'-'a')){ta[1].y+=8; if(ta[1].y>=320){/*printk("3\n");*/ return 0;}}
+	else {ta[1].x-=8; if(x<0) {/*printk("4\n"); */return 0;}}
+	for(i=nr_snake;i>=2;i--)
+	{
+		if(i==2) {ta[i].x=ta[0].x; ta[i].y=ta[0].y;}
+		else {ta[i].x=ta[i-1].x; ta[i].y=ta[i-1].y;}
+	}
+	if(ta[1].x==x&&ta[1].y==y)
+	{
+		nr_snake++;
+		ta[nr_snake].x=tail.x;
+		ta[nr_snake].y=tail.y;
+		ta[nr_snake].color=food_color;
+		food_color=rand()%63+1;
+		while(1)
+		{
+			j=0;
+			x=rand()%192; x=x-(x%8);
+			y=rand()%312; y=y-(y%8);
+			for(i=1;i<=nr_snake;i++)
+			{
+				if(x==ta[i].x&&y==ta[i].y) {j=1; continue;}
+			}
+			if(j==0) break;
+		}
+		 draw_whole_snake(); display_all(); 
+	}
+	for(i=2;i<=nr_snake;i++)
+	{
+		if(ta[1].x==ta[i].x&&ta[1].y==ta[i].y) {/*printk("5\n");*/ return 0;}
+	}
+	if(nr_snake==500) return 2;
+	else return 1;
+}
+
+void game_init()
+{
+	srand(get_time()%1000);
+	nr_snake=2;
+	win_or_lose=1;  
+	ta[1].x=96; ta[1].y=96; 
+	ta[1].color=1;
+	ta[2].x=96; ta[2].y=104; ta[2].color=6;
+	make_food();
+	reset_last_key();
+}
 
 void game_loop()
 {
 	while(1)
-	{
-		int win_or_lose=0;
-		x=20; y=20; 
-		reset_last_key();
+	{	
+		game_init(); 
 		while(1)
 		{
 			direction=last_key_code();
@@ -38,15 +127,12 @@ void game_loop()
 			{
 			init();
 			asm volatile("cli");
-			//printk("%d\n",direction);
-			if(direction==0) {y--; if(y<0) break; }
-			else if(direction==('s'-'a')){x++; if(x>=200)break; }
-			else if(direction==('d'-'a')){y++; if(y>=320)break;}
-			else {x--; if(x<0) break;}
+			win_or_lose=do_move();
+			if(win_or_lose!=1) break;// game over or win the game
 			asm volatile("sti");				
 			draw_string(game_name,0,0,4);
-			draw_snake(x,y);
-			display_all();
+			draw_whole_snake();
+			display_all(); 
 			}	
 		}
 		if(win_or_lose==0) 
@@ -54,6 +140,13 @@ void game_loop()
 			init();
 			draw_string("please press r to restart",100,80,5);
 			draw_big_string(game_over,80,100,4);
+			display_all();
+		}
+		else
+		{
+			init();
+			draw_string("please press r to restart",100,80,5);
+			draw_big_string(game_win,80,120,4);
 			display_all();
 		}
 		reset_last_key();
@@ -69,7 +162,12 @@ void game_loop()
 
 
 
-
+/*
+			if(direction==0) {y--; if(y<0) break; }
+			else if(direction==('s'-'a')){x++; if(x>=200)break; }
+			else if(direction==('d'-'a')){y++; if(y>=320)break;}
+			else {x--; if(x<0) break;}
+*/
 
 
 

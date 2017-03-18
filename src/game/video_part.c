@@ -222,12 +222,12 @@ draw_big_string(const char *str, int x, int y, int color) {
 	}
 }
 
-void draw_snake(int x,int y)
+void draw_snake(int x,int y,int color)
 {
 	int i; int j;
 	for (i = 0; i < 8; i ++) 
 		for (j = 0; j < 8; j ++) 
-				draw_pixel(x + i, y + j, 1);
+				draw_pixel(x + i, y + j, color);
 }
 
 void display_all()

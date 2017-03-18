@@ -6,12 +6,14 @@ void change(int a,char * b)
 	char f[100];	
 	int i=0;
 	int temp=a;
+	unsigned int temp2;
 	if(temp==0) {b[0]='0';b[1]='\0'; return;}
-	if(temp<0) {b[i++]='-'; temp=-temp;}
-	while(temp)
+	if(temp<0) {b[i++]='-'; temp2=(unsigned int)(-temp);}
+	else temp2=temp;
+	while(temp2)
 	{
-		f[sum++]=(temp%10)+'0';
-		temp=temp/10;
+		f[sum++]=(temp2%10)+'0';
+		temp2=temp2/10;
 	}
 	while(sum)
 	{
@@ -27,8 +29,6 @@ void change_x(unsigned int a,char * b)
 	int i=0;
 	unsigned int temp=a;
 	if(temp==0) {b[0]='0';b[1]=0; return;}
-	b[i++]='0';
-	b[i++]='x';
 	while(temp)
 	{
 		if(temp%16<=9) f[sum++]=(temp%16)+'0';
