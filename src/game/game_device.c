@@ -13,6 +13,10 @@ int get_time()
 return tick;
 }
 
+void time_pop()
+{
+tick ++;
+}
 static volatile int key_code = 0;
 
 static int letter_code[] = {
@@ -30,7 +34,13 @@ press_key(int scan_code) {
 		if (letter_code[i] == scan_code) {
 			letter_pressed[i] = TRUE;
 			if(i==0||i==('s'-'a')||i==('d'-'a')||i==('w'-'a')||i==('r'-'a'))
-			{key_code=i;}
+			{
+				if(i==0&&key_code==('d'-'a')) return;
+				if(i==('d'-'a')&&key_code==0) return;
+				if(i==('s'-'a')&&key_code==('w'-'a')) return;
+				if(i==('w'-'a')&&key_code==('s'-'a')) return;
+				key_code=i;
+			}
  		}
 	}
 	for (i = 0; i < 26; i ++) {

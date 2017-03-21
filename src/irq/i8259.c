@@ -4,8 +4,6 @@
 #define PORT_PIC_SLAVE  0xA0
 #define IRQ_SLAVE       2
 
-/* 初始化8259中断控制器：
- * 硬件中断IRQ从32号开始，自动发送EOI */
 void init_intr(void) 
 {
 	outb(PORT_PIC_MASTER + 1, 0xFF);

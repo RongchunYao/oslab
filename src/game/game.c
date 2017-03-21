@@ -1,9 +1,12 @@
 #define game_name "crazy snake"
 #define game_over "GAME OVER"
 #define game_win  "YOU WIN"
-#define DEBUG
+//#define DEBUG
 #include "../../include/common.h"
 #include "../../include/intr.h"
+int mark;
+void time_pop();
+void change(int ,char *);
 void draw_string(const char *, int , int , int) ;
 void draw_big_string(const char*, int ,int , int);
 void draw_snake(int ,int ,int);
@@ -14,6 +17,8 @@ int rand();
 void init();
 int nr_snake;
 int win_or_lose;
+char mark_str[10];
+
 typedef struct
 {
 	int color;
@@ -25,6 +30,17 @@ typedef struct
 snake ta[1001]; // ta[0] use as a temp
 
 snake tail;
+
+void draw_mark()
+{
+	change(mark-1,mark_str);
+	if(mark<=10)
+	draw_string(mark_str,0,312,47);
+	else if(mark<=100) 
+	draw_string(mark_str,0,304,47);
+	else draw_string(mark_str,0,296,47);
+}
+
 
 extern int last_key_code();
 extern int get_time();
@@ -69,7 +85,7 @@ int do_move()
 	if(direction==0) {ta[1].y-=8; if(ta[1].y<0) {/*printk("1\n");*/return 0;}}
 	else if(direction==('s'-'a')){ta[1].x+=8; if(ta[1].x>=200) {/*printk("2\n");*/ return 0;} }
 	else if(direction==('d'-'a')){ta[1].y+=8; if(ta[1].y>=320){/*printk("3\n");*/ return 0;}}
-	else {ta[1].x-=8; if(x<0) {/*printk("4\n"); */return 0;}}
+	else {ta[1].x-=8; if(ta[1].x<0) {/*printk("4\n"); */return 0;}}
 	for(i=nr_snake;i>=2;i--)
 	{
 		if(i==2) {ta[i].x=ta[0].x; ta[i].y=ta[0].y;}
@@ -77,11 +93,12 @@ int do_move()
 	}
 	if(ta[1].x==x&&ta[1].y==y)
 	{
+		mark++;
 		nr_snake++;
 		ta[nr_snake].x=tail.x;
 		ta[nr_snake].y=tail.y;
 		ta[nr_snake].color=food_color;
-		food_color=rand()%63+1;
+		food_color=rand()%63+32;
 		while(1)
 		{
 			j=0;
@@ -99,12 +116,13 @@ int do_move()
 	{
 		if(ta[1].x==ta[i].x&&ta[1].y==ta[i].y) {/*printk("5\n");*/ return 0;}
 	}
-	if(nr_snake==500) return 2;
+	if(nr_snake==50) return 2;
 	else return 1;
 }
 
 void game_init()
 {
+	mark=0;
 	srand(get_time()%1000);
 	nr_snake=2;
 	win_or_lose=1;  
@@ -123,7 +141,7 @@ void game_loop()
 		while(1)
 		{
 			direction=last_key_code();
-			if(get_time()%1000==0)
+			if(get_time()%200==0)
 			{
 			init();
 			asm volatile("cli");
@@ -131,8 +149,11 @@ void game_loop()
 			if(win_or_lose!=1) break;// game over or win the game
 			asm volatile("sti");				
 			draw_string(game_name,0,0,4);
+			draw_mark();
 			draw_whole_snake();
 			display_all(); 
+			time_pop();
+			
 			}	
 		}
 		if(win_or_lose==0) 
@@ -159,15 +180,6 @@ void game_loop()
 		}
 	}
 }
-
-
-
-/*
-			if(direction==0) {y--; if(y<0) break; }
-			else if(direction==('s'-'a')){x++; if(x>=200)break; }
-			else if(direction==('d'-'a')){y++; if(y>=320)break;}
-			else {x--; if(x<0) break;}
-*/
 
 
 
