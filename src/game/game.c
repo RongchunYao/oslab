@@ -10,6 +10,7 @@ void change(int ,char *);
 void draw_string(const char *, int , int , int) ;
 void draw_big_string(const char*, int ,int , int);
 void draw_snake(int ,int ,int);
+void draw_food(int ,int ,int);
 void display_all();
 void reset_last_key();
 void srand(int);
@@ -64,7 +65,7 @@ void draw_whole_snake()
 		draw_snake(ta[i].x,ta[i].y,ta[i].color);	
 	}	
 
-	draw_snake(x,y,food_color);
+	draw_food(x,y,food_color);
 }
 
 void make_food()
@@ -97,7 +98,12 @@ int do_move()
 		nr_snake++;
 		ta[nr_snake].x=tail.x;
 		ta[nr_snake].y=tail.y;
-		ta[nr_snake].color=food_color;
+		int tt;
+		for(tt=nr_snake;tt>=2;tt--)
+		{
+			ta[tt].color=ta[tt-1].color;
+		}
+		ta[1].color=food_color;
 		food_color=rand()%63+32;
 		while(1)
 		{

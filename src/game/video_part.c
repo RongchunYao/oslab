@@ -222,12 +222,33 @@ draw_big_string(const char *str, int x, int y, int color) {
 	}
 }
 
+void draw_food(int x,int y,int color)
+{
+	int i; int j;
+	for (i = 0; i < 8; i ++) 
+		for (j = 0; j < 8; j ++) 
+				draw_pixel(x + i, y + j, color);
+}
+
 void draw_snake(int x,int y,int color)
 {
 	int i; int j;
 	for (i = 0; i < 8; i ++) 
 		for (j = 0; j < 8; j ++) 
 				draw_pixel(x + i, y + j, color);
+	draw_pixel(x,y,0);
+	draw_pixel(x,y+1,0);
+	draw_pixel(x+1,y,0);
+	draw_pixel(x,y+6,0);
+	draw_pixel(x,y+7,0);
+	draw_pixel(x+1,y+7,0);
+	draw_pixel(x+7,y,0);
+	draw_pixel(x+7,y+1,0);
+	draw_pixel(x+6,y,0);
+	draw_pixel(x+7,y+6,0);
+	draw_pixel(x+7,y+7,0);
+	draw_pixel(x+6,y+7,0);
+	
 }
 
 void display_all()

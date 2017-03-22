@@ -13,7 +13,7 @@ extern void init_idt();
 extern void set_timer_handler(void (*ptr)());
 extern void set_keyboard_handler(void (*ptr)());
 
-void main()
+int main()
 {
 	init_serial();
 	init_timer();
@@ -26,5 +26,5 @@ void main()
 	enable_interrupt();
 
 	game_loop();//game start from here
-
+	return 0;
 }	
