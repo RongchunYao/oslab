@@ -1,5 +1,5 @@
-#include "../../include/x86.h"
-#include "../../include/intr.h"
+#include "../include/x86.h"
+#include "../include/intr.h"
 static void (*do_timer)(void);
 static void (*do_keyboard)(int);
 
@@ -10,7 +10,7 @@ void set_keyboard_handler(void (*ptr)(int)){do_keyboard=ptr;}
 
 void irq_handle(struct TrapFrame *tf)
 {
-	if(tf->irq < 1000){printk("unhandled\n"); /*assert(0);*/ }
+	if(tf->irq < 1000){printk("unhandled\n");  }
 	else if (tf->irq == 1000) {
 		do_timer();
 	} else if (tf->irq == 1001) {
@@ -22,5 +22,10 @@ void irq_handle(struct TrapFrame *tf)
 
 		do_keyboard(code);
 	}
-	else {printk("unhandled\n"); /*assert(0);*/}
+	else if(tf->irq == 0x80)
+	{
+		
+	}
+
+	else {printk("unhandled\n"); }
 }

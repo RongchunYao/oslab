@@ -3,7 +3,6 @@
 #define game_win  "YOU WIN"
 //#define DEBUG
 #include "../../include/common.h"
-#include "../../include/intr.h"
 int mark;
 void time_pop();
 void change(int ,char *);

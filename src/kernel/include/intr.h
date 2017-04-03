@@ -1,16 +1,16 @@
 #ifndef _INTR_H_
 #define _INTR_H_ 
 
-#include "common.h"
+#include "../../../include/common.h"
 
 #define DPL_KERNEL              0
 #define DPL_USER                3
-
-#define NR_SEGMENTS             3   //flat mode
+ 
 #define SEG_KERNEL_CODE         1 
 #define SEG_KERNEL_DATA         2   
 
 #define NR_IRQ    256
+
 struct GateDescriptor {
 	uint32_t offset_15_0      : 16;
 	uint32_t segment          : 16;

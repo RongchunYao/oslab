@@ -1,5 +1,5 @@
-#include "../../include/x86.h"
-#include "../../include/intr.h"
+#include "../include/x86.h"
+#include "../include/intr.h"
 
 #define INTERRUPT_GATE_32 0xE
 #define TRAP_GATE_32 0xF
@@ -35,6 +35,7 @@ set_trap(struct GateDescriptor *ptr, uint32_t selector, uint32_t offset, uint32_
 
 void irq0(); //timer
 void irq1(); //keyboard
+void 
 
 void irq_empty(); //to make sure that each have an handle function
 
@@ -47,7 +48,7 @@ void init_idt() {
 //add from here
 	set_intr(idt + 32, SEG_KERNEL_CODE, (uint32_t)irq0, DPL_KERNEL);
 	set_intr(idt + 33, SEG_KERNEL_CODE, (uint32_t)irq1, DPL_KERNEL);
-
+	set_trap(idt + 0x80, SEG_KERNEL_CODE, (uint32_t)syscall, DPL_KERNEL);
 	save_idt(idt, sizeof(idt));
 }
 

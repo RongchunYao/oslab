@@ -9,8 +9,9 @@ MAKE_GAME= make game
 run:
 	cd $(BOOT) && $(MAKE_MBR)
 	cd $(MY_GAME) && $(MAKE_GAME)
-	cat ./boot/mbr ./src/main > image
-	qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio  image
+	cat ./boot/mbr ./src/kernel/kernel ./src/main > image
+	echo "make successfully"
+	# qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio  image
 
 	
 clean:

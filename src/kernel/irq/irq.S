@@ -1,8 +1,8 @@
 
 .globl irq0; irq0: pushl $1000; jmp asm_do_irq  #timer
 .globl irq1; irq1: pushl $1001; jmp asm_do_irq  #keyboard
-
-.globl irq_empty; irq_empty: pushl $-1; jmp asm_do_irq
+.globl syscall; syscall: pushl $0x80; jmp asm_do_irq  #syscall
+.globl irq_empty; irq_empty: pushl $-1; jmp asm_do_irq  #empty call
 
 .globl asm_do_irq
 
