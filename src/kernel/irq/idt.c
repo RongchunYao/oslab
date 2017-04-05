@@ -35,7 +35,7 @@ set_trap(struct GateDescriptor *ptr, uint32_t selector, uint32_t offset, uint32_
 
 void irq0(); //timer
 void irq1(); //keyboard
-void 
+void syscall(); //syscall
 
 void irq_empty(); //to make sure that each have an handle function
 

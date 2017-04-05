@@ -1,5 +1,5 @@
-#define PORT 0x3f8   /* COM1 */
-#include "../../include/common.h"
+#define PORT 0x3f8   
+#include "include/type.h"
 static __inline uint8_t
 inb(int port)
 {

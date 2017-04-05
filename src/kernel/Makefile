@@ -1,0 +1,15 @@
+.PHONY:  clean kernel
+
+FLAGS= -Wall -Werror
+OBJ_FILE= device.o kernel.o serial.o timer.o start.o
+OBJ_FILE += i8259.o idt.o irq.o irq_handle.o printk.o
+SRC_FILE= device.c kernel.c serial.c timer.c start.c
+SRC_FILE +=irq/i8259.c irq/idt.c irq/irq.S irq/irq_handle.c
+SRC_FILE +=lib/printk.c
+
+kernel:
+	gcc -fno-stack-protector -O0 -m32 -c $(FLAGS) $(SRC_FILE)
+	ld -o kernel -T kernel.lds $(OBJ_FILE)
+
+clean:
+	-rm $(OBJ_FILE) kernel

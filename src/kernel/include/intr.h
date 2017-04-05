@@ -1,7 +1,7 @@
 #ifndef _INTR_H_
 #define _INTR_H_ 
 
-#include "../../../include/common.h"
+#include "type.h"
 
 #define DPL_KERNEL              0
 #define DPL_USER                3
@@ -25,6 +25,7 @@ struct GateDescriptor {
 struct TrapFrame {
 	uint32_t edi, esi, ebp, xxx, ebx, edx, ecx, eax;
 	int32_t irq;
+	uint32_t error_code;
 };
 
 static inline void

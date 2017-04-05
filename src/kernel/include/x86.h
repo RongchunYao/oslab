@@ -1,7 +1,7 @@
-#ifndef JOS_INC_X86_H
-#define JOS_INC_X86_H
+#ifndef _X86_H
+#define _X86_H
 
-#include "../../../include/common.h"
+#include "type.h"
 
 int my_abort(const char *, int); 
 
@@ -298,4 +298,4 @@ xchg(volatile uint32_t *addr, uint32_t newval)
 	return result;
 }
 
-#endif /* !JOS_INC_X86_H */
+#endif 
