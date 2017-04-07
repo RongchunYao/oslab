@@ -157,11 +157,11 @@ static char font8x8_basic[128][8] = {
 #define width 320
 #define height 200
 #define display_size width*height
-#include "../../include/common.h"
+#include "type.h"
+
 static uint8_t display_buf[display_size];
 void my_memset(void *, int , size_t);
 void my_memcpy(void *, const void *, size_t) ;
-void * display_start=(void *)0xa0000;
 
 static inline void
 draw_pixel(int x, int y, int color) {
@@ -253,5 +253,6 @@ void draw_snake(int x,int y,int color)
 
 void display_all()
 {
-	my_memcpy(display_start, display_buf, display_size);
+	asm volatile ("movl $4,%%eax"::);
+	asm volatile ("movl %0,%%ebx"::"b"(display_buf));
 }

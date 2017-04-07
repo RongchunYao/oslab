@@ -1,5 +1,5 @@
 #define SECTSIZE 512
-#include "../include/common.h"
+#include "common.h"
 #include "boot.h"
 
 void waitdisk()

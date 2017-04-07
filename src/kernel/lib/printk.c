@@ -1,5 +1,7 @@
 #include "../include/type.h"
 
+extern void serial_out(char);
+
 void change(int a,char * b)
 {
 	int sum=0;
@@ -61,23 +63,13 @@ void v_fprintf(void (*printer)(char), const char *ctl, void **args) {
 		else {v_fprintf(printer,"sorry, cannot support this now\n",0); break;}
 	}
 	}
-
 	
 }
-
-void basic_put(char ch)
-{
-	asm volatile ("movb %0,%%cl"::"ba"(ch));
-	asm volatile ("movl $1,%%eax"::);
-	asm volatile ("movl $1,%%ebx"::);
-	asm volatile ("int $0x80"::);
-}
-
 
 void __attribute__((__noinline__)) 
 printk(const char *ctl, ...) {
 	void **args = (void **)&ctl + 1;
-	v_fprintf(basic_put, ctl, args);
+	v_fprintf(serial_out, ctl, args);
 }
 
 void my_memcpy(void *dest, const void *src, size_t size) {

@@ -2,7 +2,7 @@
 #define game_over "GAME OVER"
 #define game_win  "YOU WIN"
 //#define DEBUG
-#include "../../include/common.h"
+#include "type.h"
 int mark;
 void time_pop();
 void change(int ,char *);

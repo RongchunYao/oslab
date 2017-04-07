@@ -1,4 +1,4 @@
-#include "../../include/common.h"
+#include "../type.h"
 
 void change(int a,char * b)
 {
@@ -65,13 +65,19 @@ void v_fprintf(void (*printer)(char), const char *ctl, void **args) {
 	
 }
 
-extern void serial_out(char);
+void basic_put(char ch)
+{
+	asm volatile ("movb %0,%%cl"::"ba"(ch));
+	asm volatile ("movl $1,%%eax"::);
+	asm volatile ("movl $1,%%ebx"::);
+	asm volatile ("int $0x80"::);
+}
 
 /* __attribute__((__noinline__))  here is to disable inlining for this function to avoid some optimization problems for gcc 4.7 */
 void __attribute__((__noinline__)) 
 printk(const char *ctl, ...) {
 	void **args = (void **)&ctl + 1;
-	v_fprintf(serial_out, ctl, args);
+	v_fprintf(basic_put, ctl, args);
 }
 
 void my_memcpy(void *dest, const void *src, size_t size) {
@@ -81,3 +87,9 @@ void my_memcpy(void *dest, const void *src, size_t size) {
 void my_memset(void *dest, int data, size_t size) {
 	asm volatile ("cld; rep stosb" : : "c"(size), "a"(data), "D"(dest));
 }
+
+
+
+
+
+

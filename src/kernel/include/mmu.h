@@ -1,7 +1,7 @@
 #ifndef _MMU_H_
 #define _MMU_H_
 
-#define NR_SEGMENT 		8
+#define NR_SEGMENT 		16
 #define DPL_KERNEL              0
 #define DPL_USER                3
 
@@ -27,9 +27,10 @@ typedef struct SegmentDescriptor {
 	uint32_t base_31_24          : 8;
 } SegDesc;
 
-typedef struct GDTR_reg {
+typedef struct GDTR_reg {	
 	uint16_t limit;
 	uint32_t base;
+	
 } GDTR;
 
 typedef struct TASK_Des{

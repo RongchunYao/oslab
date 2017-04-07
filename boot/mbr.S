@@ -10,7 +10,6 @@
 
 start:  
 	cli
-
 	movw    $0x13, %ax        
 	int     $0x10             
 

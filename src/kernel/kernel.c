@@ -2,29 +2,24 @@
 #include "include/intr.h"
 #include "include/x86.h"
 
-extern void timer_event();
-extern void keyboard_event(int);
 extern void init_serial();
-extern void serial_out(char);
-extern void game_loop();
 extern void init_intr();
 extern void init_timer();
 extern void init_idt();
 extern void init_seg();
-extern void set_timer_handler(void (*ptr)());
-extern void set_keyboard_handler(void (*ptr)());
-
+extern void printk(const char * , ...);
+extern void basic_put(char);
 int main()
 {
+	
 	disable_interrupt();
-	init_seg();
 	init_serial();
 	init_timer();
 	init_intr();
 	init_idt();
-	set_timer_handler(timer_event);
-	set_keyboard_handler(keyboard_event);
-	enable_interrupt();
-	
-	return 0;
+	init_seg();
+	asm volatile("movl $0x300000,%%esp"::);
+	printk("fuck you bitch\n");
+	while(1);
+		
 }	

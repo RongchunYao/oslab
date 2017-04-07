@@ -1,20 +1,20 @@
-VPATH = ./boot
 .PHONY: clean run terminal
 
 BOOT= boot
-MY_GAME= ./src
-MAKE_MBR= make mbr
-MAKE_GAME= make game
+KER= src/kernel
+GAME= src/game
 
 run:
-	cd $(BOOT) && $(MAKE_MBR)
-	cd $(MY_GAME) && $(MAKE_GAME)
-	cat ./boot/mbr ./src/kernel/kernel ./src/main > image
+	cd $(BOOT) && make mbr
+#	cd $(GAME) && make game
+	cd $(KER) && make kernel 
+	cat ./boot/mbr ./src/kernel/kernel > image
 	echo "make successfully"
-	# qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio  image
+	qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio  image
 
 	
 clean:
 	cd $(BOOT) && make clean
-	cd $(MY_GAME) && make clean
+	cd $(GAME) && make clean
+	cd $(KER) && make clean
 
