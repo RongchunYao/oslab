@@ -31,11 +31,12 @@ void irq_handle(struct TrapFrame *tf)
 		keyboard_event(code);
 	}
 	else if(tf->irq == 0x80)
-	{
+	{	
 		if(tf->eax==sys_write) //1 is putc
 		{
 			if(tf->ebx==1) //standard output
 			{
+				printk("you got here , good");
 				printk((const char *)(tf->ecx));
 			}
 		}

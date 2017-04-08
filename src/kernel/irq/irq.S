@@ -1,3 +1,4 @@
+.code32
 #-----|-----entry--------|-errorcode--|-----id-----|---handler---|
 .globl vec0;    vec0:  cli; pushl $0;  pushl    $0; jmp asm_do_irq
 .globl vec1;    vec1:  cli; pushl $0;  pushl    $1; jmp asm_do_irq
@@ -24,14 +25,23 @@
 
 .extern irq_handle
 
+.globl empty;
+
 asm_do_irq:
+
 	pushal
 
-	pushl %esp			
+	pushl %esp	
+	
 	call irq_handle
+
 	addl $4, %esp
 
 	popal
 	addl $8, %esp
-	sti;
+	sti
 	iret
+
+
+
+

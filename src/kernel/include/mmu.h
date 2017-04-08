@@ -8,6 +8,8 @@
 #define SEG_NULL                0 
 #define SEG_KERNEL_CODE         1 
 #define SEG_KERNEL_DATA         2
+#define SEG_USER_CODE           3
+#define SEG_USER_DATA 		4
 
 #include"type.h"
 

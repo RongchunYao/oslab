@@ -1,8 +1,7 @@
 #include "../type.h"
 
 
-void __attribute__((__noinline__)) 
-printk(const char *ctl, ...) {
+void print(const char *ctl, ...) {
 	asm volatile ("movl %0,%%ecx"::"r"(ctl));
 	asm volatile ("movl $1,%%eax"::);
 	asm volatile ("movl $1,%%ebx"::);
@@ -15,4 +14,26 @@ void my_memcpy(void *dest, const void *src, size_t size) {
 
 void my_memset(void *dest, int data, size_t size) {
 	asm volatile ("cld; rep stosb" : : "c"(size), "a"(data), "D"(dest));
+}
+
+void change(int a,char * b)
+{
+	int sum=0;
+	char f[100];	
+	int i=0;
+	int temp=a;
+	unsigned int temp2;
+	if(temp==0) {b[0]='0';b[1]='\0'; return;}
+	if(temp<0) {b[i++]='-'; temp2=(unsigned int)(-temp);}
+	else temp2=temp;
+	while(temp2)
+	{
+		f[sum++]=(temp2%10)+'0';
+		temp2=temp2/10;
+	}
+	while(sum)
+	{
+	b[i++]=f[--sum];
+	}
+	b[i]='\0';
 }

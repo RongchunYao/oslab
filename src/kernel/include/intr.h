@@ -22,11 +22,16 @@ struct GateDescriptor {
 	uint32_t offset_31_16     : 16;
 };
 
-struct TrapFrame {
-	uint32_t edi, esi, ebp, xxx, ebx, edx, ecx, eax;
+struct TrapFrame{
+	uint32_t  edi, esi, ebp, xxx, ebx, edx, ecx, eax;
 	int32_t irq;
 	uint32_t error_code;
-};
+	uint32_t eip;
+	uint32_t cs;
+	uint32_t eflags;
+	uint32_t esp;
+	uint32_t ss;
+} ;
 
 static inline void
 wait_for_interrupt() {

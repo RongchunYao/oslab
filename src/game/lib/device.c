@@ -1,7 +1,7 @@
 int get_time()
 {
 	int time;
-	asm volatile ("movb $2,%%eax"::);
+	asm volatile ("movl $2,%%eax"::);
 	asm volatile ("movl $0,%%ebx"::);
 	asm volatile ("int $ 0x80"::);
 	asm volatile ("movl %%eax,%0":"=a"(time):);
@@ -10,7 +10,7 @@ int get_time()
 
 void time_pop()
 {
-	asm volatile ("movb $2,%%eax"::);
+	asm volatile ("movl $2,%%eax"::);
 	asm volatile ("movl $1,%%ebx"::);
 	asm volatile ("int $ 0x80"::);
 }
@@ -18,7 +18,7 @@ void time_pop()
 int last_key_code()
 {
 	int key_code;
-	asm volatile ("movb $3,%%eax"::);
+	asm volatile ("movl $3,%%eax"::);
 	asm volatile ("movl $0,%%ebx"::);
 	asm volatile ("int $ 0x80"::);
 	asm volatile ("movl %%eax,%0":"=a"(key_code):);
@@ -27,7 +27,7 @@ int last_key_code()
  
 void reset_last_key()
 {
-	asm volatile ("movb $3,%%eax"::);
+	asm volatile ("movl $3,%%eax"::);
 	asm volatile ("movl $1,%%ebx"::);
 	asm volatile ("int $ 0x80"::);
 }
