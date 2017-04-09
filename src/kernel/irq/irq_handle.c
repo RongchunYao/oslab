@@ -67,9 +67,7 @@ void irq_handle(struct TrapFrame *tf)
 		}
 		else if(tf->eax==sys_video) //dispaly
 		{
-			printk("you gao  ni mei na\n");	
 			my_memcpy((void *)video_start,(const void *)(tf->ebx),0x10000);
-			printk("so what's wrong");
 		}
 	}
 

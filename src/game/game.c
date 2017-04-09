@@ -143,11 +143,8 @@ void game_loop()
 {
 	while(1)
 	{	
+		print("hello! game start!\n");
 		game_init(); 
-		init();
-		time_pop();
-		display_all(); 
-		print("finish test\n");
 		while(1)
 		{
 			direction=last_key_code();
@@ -182,9 +179,7 @@ void game_loop()
 		while(1)
 		{
 			int temp=last_key_code(); 
-			asm volatile("cli");
-			if(temp==('r'-'a')){asm volatile("sti");break;}
-			asm volatile("sti");
+			if(temp==('r'-'a')){break;}
 		}
 	}
 }

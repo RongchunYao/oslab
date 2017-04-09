@@ -30,7 +30,6 @@ int main()
 	init_PCB();
 	go=&trap;
 	trap.eip=entry;
-	printk("%x",entry);
 	trap.cs=(3<<3)|3;
 	trap.eflags=0x202;
 	trap.esp=0x500000;	
