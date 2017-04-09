@@ -2,6 +2,7 @@
 #include "include/intr.h"
 #include "include/x86.h"
 
+
 extern void init_serial();
 extern void init_intr();
 extern void init_timer();
@@ -14,7 +15,7 @@ extern void init_PCB();
 extern void add_PCB(void *);
 extern uint32_t entry;
 struct TrapFrame trap;
-struct TrapFrame * go;
+struct TrapFrame * go; //use this to come into user space
 int main()
 {
 	
@@ -24,17 +25,17 @@ int main()
 	init_intr();
 	init_idt();
 	init_seg();
-	asm volatile("movl $0x280000,%%esp"::);
-	load();
-	enable_interrupt();
+	asm volatile("movl $0x3f0000,%%esp"::);
+	load();	
 	init_PCB();
 	go=&trap;
 	trap.eip=entry;
 	trap.cs=(3<<3)|3;
 	trap.eflags=0x202;
-	trap.esp=0x500000;	
+	trap.esp=0x1f0000;	
 	trap.ss=(4<<3)|3;
 	add_PCB((void *)go);
+	enable_interrupt();
 	asm volatile("movw $0x23,%%ax"::);
 	asm volatile("movw %%ax,%%ds"::);
 	asm volatile("movw %%ax,%%es"::);
