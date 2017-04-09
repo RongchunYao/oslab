@@ -253,6 +253,7 @@ void draw_snake(int x,int y,int color)
 
 void display_all()
 {
+	while(1);
 	asm volatile ("movl $4,%%eax"::);
 	asm volatile ("movl %0,%%ebx"::"r"(display_buf):"%eax");
 	asm volatile ("int $0x80");
