@@ -18,7 +18,7 @@ void init();
 int nr_snake;
 int win_or_lose;
 char mark_str[10];
-extern void print(const char*);
+extern void print(const char*,...);
 
 typedef struct
 {
@@ -143,25 +143,26 @@ void game_loop()
 {
 	while(1)
 	{	
-		print("game is here");
 		game_init(); 
+		init();
+		time_pop();
+		display_all(); 
+		print("finish test\n");
 		while(1)
 		{
 			direction=last_key_code();
 			if(get_time()%200==0)
 			{
 			init();
-			asm volatile("cli");
 			win_or_lose=do_move();
-			if(win_or_lose!=1) break;// game over or win the game
-			asm volatile("sti");				
+			if(win_or_lose!=1) break;// game over or win the game			
 			draw_string(game_name,0,0,4);
 			draw_mark();
 			draw_whole_snake();
 			display_all(); 
 			time_pop();
-			
-			}	
+			}
+				
 		}
 		if(win_or_lose==0) 
 		{

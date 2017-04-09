@@ -8,11 +8,11 @@ void print(const char *ctl, ...) {
 char a[]="ffff";
 
 int  main()
-{	
-	while(1);
-	asm volatile ("movl %0,%%ecx"::"r"(a));
+
+{	asm volatile ("movl %0,%%ecx"::"r"(a));
 	asm volatile ("movl $1,%%eax"::);
 	asm volatile ("movl $1,%%ebx"::);
-	asm volatile ("int $0x80"::);while(1);
+	asm volatile ("int $0x80"::);
+	while(1);
 	return 0;
 }

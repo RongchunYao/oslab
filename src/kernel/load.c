@@ -103,7 +103,6 @@ void load()
 		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off+102400);
 		for(i=(uint8_t *)(ph->paddr+(ph->filesz));i<(uint8_t *)(ph->paddr+(ph->memsz));*i=0,i++);
 	}
-	printk("%x\n",elf->entry);
 	entry=(uint32_t)(elf->entry);
 }
 

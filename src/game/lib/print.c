@@ -3,8 +3,8 @@
 
 void print(const char *ctl, ...) {
 	asm volatile ("movl %0,%%ecx"::"r"(ctl));
-	asm volatile ("movl $1,%%eax"::);
-	asm volatile ("movl $1,%%ebx"::);
+	asm volatile ("movl $1,%%eax":::"%ecx");
+	asm volatile ("movl $1,%%ebx":::"%eax","%ecx");
 	asm volatile ("int $0x80"::);
 }
 

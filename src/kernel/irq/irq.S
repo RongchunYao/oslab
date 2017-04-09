@@ -18,6 +18,7 @@
 
 .globl irq0;    irq0:  cli;  pushl $0;    pushl $1000; jmp asm_do_irq  #timer
 .globl irq1;    irq1:  cli;  pushl $0;    pushl $1001; jmp asm_do_irq  #keyboard
+.globl irq14;   irq14:  cli; pushl $0;    pushl $1014; jmp asm_do_irq
 .globl syscall; syscall: cli; pushl $0;    pushl $0x80; jmp asm_do_irq  #syscall
 .globl irq_empty; irq_empty: cli; push $0; pushl $-1;   jmp asm_do_irq  #empty call
 

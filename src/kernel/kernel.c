@@ -36,13 +36,11 @@ int main()
 	trap.esp=0x500000;	
 	trap.ss=(4<<3)|3;
 	add_PCB((void *)go);
-	
 	asm volatile("movw $0x23,%%ax"::);
 	asm volatile("movw %%ax,%%ds"::);
 	asm volatile("movw %%ax,%%es"::);
 	asm volatile("movl %0,%%esp"::"r"(go));
-	asm volatile("addl $0x28,%%esp"::);
-	while(1);
+	asm volatile("addl $0x28,%%esp; "::);
 	asm volatile("iret"::);
 	while(1);		
 }	
