@@ -6,6 +6,7 @@
 #define sys_clock 2
 #define sys_keyboard 3
 #define sys_video  4
+#define sys_exit 5
 extern void my_memcpy(void *,const void *,size_t);
 extern void printk(const char * , ...);
 extern void timer_event();
@@ -16,7 +17,8 @@ extern void time_pop();
 extern void reset_last_key();
 extern int last_key_code();
 extern void serial_out(char);
-
+extern void process_exit();
+extern void time_treat();
 void irq_handle(struct TrapFrame *tf)
 {
 	if (tf->irq == 1000) {
@@ -68,6 +70,10 @@ void irq_handle(struct TrapFrame *tf)
 		else if(tf->eax==sys_video) //dispaly
 		{
 			my_memcpy((void *)video_start,(const void *)(tf->ebx),0x10000);
+		}
+		else if(tf->eax==sys_exit) 
+		{
+			process_exit();
 		}
 	}
 

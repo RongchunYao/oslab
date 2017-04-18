@@ -143,7 +143,7 @@ void game_loop()
 {
 	while(1)
 	{	
-		print("hello! game start!\n");
+		print("%dhello! game start! This is the test for print %x\n",123456,123456);
 		game_init(); 
 		while(1)
 		{

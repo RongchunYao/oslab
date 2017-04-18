@@ -17,6 +17,11 @@ write_gdtr(void *addr, uint32_t size) {
 	asm volatile("lgdt (%0)" : : "r"(data));
 }
 
+void set_tss(uint32_t esp)
+{
+	tss.esp0=esp;
+}
+
 void Makegdt(uint32_t limit,uint32_t base,int type,int dpl,int num)
 {
 	gdt[num].limit_15_0 = (limit>>12)&0xffff;
