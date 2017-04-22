@@ -63,9 +63,9 @@ void init_seg()
 	Makegdt(0,0,0,0,0); seg_num++;
 	Makegdt(0xffffffff,0,0xa,0,seg_num); seg_num++;  //kernel code
 	Makegdt(0xffffffff,0,0x2,0,seg_num); seg_num++;  //kernel data
-	Makegdt(0x400000,0,0xa,3,seg_num); seg_num++;  //user code
-	Makegdt(0x400000,0,0x2,3,seg_num); seg_num++;  //user data
-	tss.esp0=0x280000;
+	Makegdt(0xffffffff,0,0xa,3,seg_num); seg_num++;  //user code
+	Makegdt(0xffffffff,0,0x2,3,seg_num); seg_num++;  //user data
+	tss.esp0=0x2f0000;
 	tss.ss0=0x10;
 	Maketss(0xffffffff,(uint32_t)(&tss),0x9,0,seg_num); seg_num++; //for tss
 	tr=(5<<3)|3;

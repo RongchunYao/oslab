@@ -17,9 +17,13 @@ extern void init_PCB();
 extern int add_PCB(uint32_t,struct TrapFrame,const char*,uint32_t,uint32_t);
 extern uint32_t entry;
 extern void reschedule();
+extern void debug();
+void set_tss(uint32_t);
 struct TrapFrame trap;
+
 int main()
 {
+	asm volatile("cli"::);
 	disable_interrupt();
 	init_serial();
 	init_timer();
@@ -34,8 +38,7 @@ int main()
 	trap.eflags=0x202;
 	trap.esp=0x1f0000;	
 	trap.ss=(4<<3)|3;
-	enable_interrupt();
-	add_PCB(run_sta,trap,"game",10,0);
+	add_PCB(ready_sta,trap,"game",10,0);
 	reschedule();
 	while(1);		
 }	

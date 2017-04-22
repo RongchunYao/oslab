@@ -7,6 +7,8 @@
 #define sys_keyboard 3
 #define sys_video  4
 #define sys_exit 5
+#define sys_pid 6
+extern void print_tf(struct TrapFrame *);
 extern void my_memcpy(void *,const void *,size_t);
 extern void printk(const char * , ...);
 extern void timer_event();
@@ -18,11 +20,15 @@ extern void reset_last_key();
 extern int last_key_code();
 extern void serial_out(char);
 extern void process_exit();
-extern void time_treat();
+extern void time_treat(struct TrapFrame *);
+extern int getpid();
+extern struct TrapFrame * gaoziteng;
 void irq_handle(struct TrapFrame *tf)
 {
+	gaoziteng = tf;
 	if (tf->irq == 1000) {
 		timer_event();
+		time_treat(tf);
 	} else if (tf->irq == 1001) {
 		uint32_t code = inb(0x60);
 		uint32_t val = inb(0x61);
@@ -64,6 +70,7 @@ void irq_handle(struct TrapFrame *tf)
 			}
 			else if(tf->ebx==1) //reset
 			{
+				print_tf(tf);
 				reset_last_key();
 			}
 		}
@@ -75,9 +82,13 @@ void irq_handle(struct TrapFrame *tf)
 		{
 			process_exit();
 		}
+		else if(tf->eax==sys_pid)
+		{
+			tf->eax=getpid();
+		}
 	}
-
 	else {
-	//do nothing
+		print_tf(tf);
+		printk("shoud not reach this, unhandled case%d\n",tf->irq);
 	}
 }

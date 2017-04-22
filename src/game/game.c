@@ -1,7 +1,6 @@
 #define game_name "crazy snake"
 #define game_over "GAME OVER"
 #define game_win  "YOU WIN"
-//#define DEBUG
 #include "type.h"
 int mark;
 void time_pop();
@@ -18,7 +17,7 @@ void init();
 int nr_snake;
 int win_or_lose;
 char mark_str[10];
-extern void print(const char*,...);
+extern int getpid();
 
 typedef struct
 {
@@ -83,10 +82,10 @@ int do_move()
 	ta[0].color=ta[1].color;
 	tail.x=ta[nr_snake].x;	
 	tail.y=ta[nr_snake].y;
-	if(direction==0) {ta[1].y-=8; if(ta[1].y<0) {/*print("1\n");*/return 0;}}
-	else if(direction==('s'-'a')){ta[1].x+=8; if(ta[1].x>=200) {/*print("2\n");*/ return 0;} }
-	else if(direction==('d'-'a')){ta[1].y+=8; if(ta[1].y>=320){/*print("3\n");*/ return 0;}}
-	else {ta[1].x-=8; if(ta[1].x<0) {/*print("4\n"); */return 0;}}
+	if(direction==0) {ta[1].y-=8; if(ta[1].y<0) {return 0;}}
+	else if(direction==('s'-'a')){ta[1].x+=8; if(ta[1].x>=200) { return 0;} }
+	else if(direction==('d'-'a')){ta[1].y+=8; if(ta[1].y>=320){ return 0;}}
+	else {ta[1].x-=8; if(ta[1].x<0) {return 0;}}
 	for(i=nr_snake;i>=2;i--)
 	{
 		if(i==2) {ta[i].x=ta[0].x; ta[i].y=ta[0].y;}
@@ -120,7 +119,7 @@ int do_move()
 	}
 	for(i=2;i<=nr_snake;i++)
 	{
-		if(ta[1].x==ta[i].x&&ta[1].y==ta[i].y) {/*print("5\n");*/ return 0;}
+		if(ta[1].x==ta[i].x&&ta[1].y==ta[i].y) { return 0;}
 	}
 	if(nr_snake==50) return 2;
 	else return 1;
@@ -139,20 +138,22 @@ void game_init()
 	reset_last_key();
 }
 
+
 void game_loop()
 {
 	while(1)
 	{	
+		print("user pid is %d\n",getpid());
 		print("%dhello! game start! This is the test for print %x\n",123456,123456);
 		game_init(); 
 		while(1)
-		{
+		{		
 			direction=last_key_code();
 			if(get_time()%200==0)
 			{
 			init();
 			win_or_lose=do_move();
-			if(win_or_lose!=1) break;// game over or win the game			
+			if(win_or_lose!=1) break;		
 			draw_string(game_name,0,0,4);
 			draw_mark();
 			draw_whole_snake();
