@@ -1,4 +1,4 @@
-#include "../type.h"
+#include "type.h"
 
 char buffer[1000];
 volatile int pointer;
@@ -25,7 +25,7 @@ void change(int a,char * b)
 	b[i]='\0';
 }
 
-void change_x(unsigned int a,char * b)
+void change_x(unsigned int  a,char *b)
 {
 	int sum=0;
 	char f[100];	

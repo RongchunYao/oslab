@@ -1,14 +1,14 @@
 #include "include/type.h"
 #include "include/intr.h"
 
-#define KSTACK_SIZE 8192
-#define NR_PCB 50
+#define KSTACK_SIZE 4096
+#define NR_PCB 60
 
 #define NULL 0
 #define run_sta 1
 #define ready_sta 2
 #define wait_sta 3
-struct TrapFrame * gaoziteng;
+struct TrapFrame test;
 void print_tf(struct TrapFrame * a)
 {
 	printk("eax%x\n",a->eax);
@@ -17,6 +17,7 @@ void print_tf(struct TrapFrame * a)
 	printk("edx%x\n",a->edx);
 	printk("edi%x\n",a->edi);
 	printk("esp%x\n",a->esp);
+	printk("ebp%x\n",a->ebp);
 	printk("eip%x\n",a->eip);
 	printk("cs%x\n",a->cs);
 }
@@ -37,9 +38,7 @@ void my_strcpy(char * dest, const char * src)
 
 
 struct PCB_type {  
-uint8_t kstack1[KSTACK_SIZE];
-   struct TrapFrame  tf;
-uint8_t kstack3[KSTACK_SIZE];
+   struct TrapFrame  *tf;
     uint32_t pid;
     char name[32];   
     bool present;
@@ -81,17 +80,17 @@ void init_PCB()
 	nr_ready_PCB=0;
 	nr_wait_PCB=0;
 	int i;
-	for(i=0;i<100;i++)
+	for(i=0;i<NR_PCB;i++)
 	{
 		PCB[i].pid=i;
 	}
 }
 
-int add_PCB(uint32_t status,struct TrapFrame trapframe,const char * name,uint32_t time,uint32_t ppid)
+int add_PCB(uint32_t status,struct TrapFrame *trapframe,const char * name,uint32_t time,uint32_t ppid)
 {
 	if(nr_run_PCB+nr_ready_PCB+nr_wait_PCB==NR_PCB) {printk("no more resources\n"); asm volatile ("sti"); return 0;}
 	int i;
-	for(i=1;i<100;i++) {if(PCB[i].present==0) break;}
+	for(i=1;i<NR_PCB;i++) {if(PCB[i].present==0) break;}
 	PCB[i].present=1;
 	struct PCB_type * temp;
 	if(status==run_sta)
@@ -217,13 +216,15 @@ void reschedule()
 	}
 	else if(nr_run_PCB>1)
 	{
+		//printk("%s\n",PCB[i].next->name);
 		set_tss((uint32_t)((PCB[i].next)->kstack)+KSTACK_SIZE-8);
 		asm volatile("movw $0x23,%%ax"::);
 		asm volatile("movw %%ax,%%ds"::);
 		asm volatile("movw %%ax,%%es"::);
-		asm volatile("movl %0,%%esp"::"r"(&((PCB[i].next)->tf)));
+		asm volatile("movl %0,%%esp"::"r"(((PCB[i].next)->tf)));
 		asm volatile("popal"::);
 		asm volatile("addl $0x8,%%esp; "::);
+		
 		asm volatile("iret"::);
 	}
 	else
@@ -242,12 +243,12 @@ void reschedule()
 			temp->status=run_sta;
 			temp=temp->next;
 		}
+	//	printk("%s\n",PCB[i].next->name);
 		set_tss((uint32_t)(&(PCB[i].next)->kstack)+KSTACK_SIZE-8);
 		asm volatile("movw $0x23,%%ax"::);
 		asm volatile("movw %%ax,%%ds"::);
 		asm volatile("movw %%ax,%%es"::);
-		//asm volatile("movl %0,%%esp"::"r"(&((PCB[i].next)->tf)));
-		asm volatile("movl %0,%%esp"::"r"(gaoziteng));
+		asm volatile("movl %0,%%esp"::"r"(((PCB[i].next)->tf)));
 		asm volatile("popal"::);
 		asm volatile("addl $0x8,%%esp; "::);
 		asm volatile("iret"::);
@@ -262,10 +263,11 @@ void time_treat(struct TrapFrame * TF)
 		(PCB[run_head].next)->time--;		
 		if((PCB[run_head].next)->time==0)
 		{
-			add_PCB(ready_sta,*gaoziteng,(const char *)((PCB[run_head].next)->name),10,(PCB[run_head].next)->ppid);
-			print_tf(TF);
+			add_PCB(ready_sta,TF,(const char *)((PCB[run_head].next)->name),200,(PCB[run_head].next)->ppid);	
+			//print_tf(TF);
 			//print_tf(&(PCB[ready_head].tf));
 			delete_PCB((PCB[run_head].next)->pid);
+			//debug();
 			reschedule();
 		}
 	}

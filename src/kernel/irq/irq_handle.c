@@ -22,11 +22,33 @@ extern void serial_out(char);
 extern void process_exit();
 extern void time_treat(struct TrapFrame *);
 extern int getpid();
-extern struct TrapFrame * gaoziteng;
+struct TrapFrame test;
 void irq_handle(struct TrapFrame *tf)
 {
-	gaoziteng = tf;
 	if (tf->irq == 1000) {
+		/*print_tf(tf);
+		test.eax=tf->eax;
+		test.edi=tf->edi;
+		test.esi=tf->esi;
+		test.ebp=tf->ebp;
+		test.xxx=tf->xxx;
+		test.ebx=tf->ebx;
+		test.edx=tf->edx;
+		test.ecx=tf->ecx;
+		test.irq=tf->irq;
+		test.error_code=tf->error_code;	
+		test.eip=tf->eip;
+		test.cs=tf->cs;
+		test.eflags=tf->eflags;
+		test.esp=tf->esp;
+		test.ss=tf->ss;
+		asm volatile("movw $0x23,%%ax"::);
+		asm volatile("movw %%ax,%%ds"::);
+		asm volatile("movw %%ax,%%es"::);
+		asm volatile("movl %0,%%esp"::"r"(&test));
+		asm volatile("popal"::);
+		asm volatile("addl $0x8,%%esp; "::);
+		asm volatile("iret"::);*/
 		timer_event();
 		time_treat(tf);
 	} else if (tf->irq == 1001) {
@@ -70,7 +92,6 @@ void irq_handle(struct TrapFrame *tf)
 			}
 			else if(tf->ebx==1) //reset
 			{
-				print_tf(tf);
 				reset_last_key();
 			}
 		}
@@ -91,4 +112,5 @@ void irq_handle(struct TrapFrame *tf)
 		print_tf(tf);
 		printk("shoud not reach this, unhandled case%d\n",tf->irq);
 	}
+	
 }

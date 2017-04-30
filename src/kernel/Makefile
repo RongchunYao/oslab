@@ -10,7 +10,8 @@ SRC_FILE +=lib/printk.c
 kernel:
 	gcc -fno-stack-protector -O0 -m32 -c $(FLAGS) $(SRC_FILE)
 	ld -o kernel -T kernel.lds $(OBJ_FILE)
+	objdump -d kernel > kernel.s
 	chmod +x ker.sh
 	./ker.sh kernel
 clean:
-	-rm $(OBJ_FILE) kernel
+	rm $(OBJ_FILE) kernel

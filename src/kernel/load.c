@@ -29,8 +29,6 @@ struct ProgramHeader {
     unsigned int align;
 };
 
-uint32_t entry;
-
 static __inline uint8_t
 inb(int port)
 {
@@ -89,21 +87,21 @@ void read_disk(uint8_t * paddr, int count, int offset)
 
 
 
-void load()
+uint32_t load(uint32_t offset)
 {
 	struct ELFHeader *elf;
 	struct ProgramHeader *ph,*obj_ph;
 	elf=(struct ELFHeader*)0x80000;
-	read_disk((uint8_t *)elf,4096,102400);
+	read_disk((uint8_t *)elf,4096,offset);
 	ph = (struct ProgramHeader*)((uint8_t*)elf+elf->phoff);
 	uint8_t * i;
 	obj_ph=ph+elf->phnum;
 	for(;ph<obj_ph;ph++)
 	{
-		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off+102400);
+		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off+offset);
 		for(i=(uint8_t *)(ph->paddr+(ph->filesz));i<(uint8_t *)(ph->paddr+(ph->memsz));*i=0,i++);
 	}
-	entry=(uint32_t)(elf->entry);
+	return (uint32_t)(elf->entry);
 }
 
 
