@@ -28,6 +28,7 @@ struct TrapFrame trap;
 struct TrapFrame trap2;
 int main()
 {
+	printk("hello! this is kernel\n");
 	asm volatile("cli"::);
 	disable_interrupt();
 	init_serial();
@@ -35,20 +36,19 @@ int main()
 	init_intr();
 	init_idt();
 	init_seg();
-	asm volatile("movl $0x2f0000,%%esp"::);
 	init_PCB();
 	trap.eip=load(102400);
 	trap.cs=SEG(user_cs,user_dpl);
 	trap.eflags=0x202;
 	trap.esp=0x1f0000;	
-	trap.ss=SEG(user_ss,user_dpl);
-	trap2.eip=load(204800);
-	trap2.cs=SEG(user_cs,user_dpl);
-	trap2.eflags=0x202;
-	trap2.esp=0x500000;
-	trap2.ss=SEG(user_ss,user_dpl);
+	trap.ss=SEG(user_ss,user_dpl); 
+	//trap2.eip=load(204800);while(1);
+	//trap2.cs=SEG(user_cs,user_dpl);
+	//trap2.eflags=0x202;
+	//trap2.esp=0x500000;
+	//trap2.ss=SEG(user_ss,user_dpl);
 	add_PCB(run_sta,&trap,"game",10,0);
-	add_PCB(run_sta,&trap2,"shell",10,0);
+	//add_PCB(run_sta,&trap2,"shell",10,0)
 	reschedule();
 	while(1);		
 }	

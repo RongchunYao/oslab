@@ -206,6 +206,9 @@ void delete_PCB(int pid)
 	}
 }
 
+void b_p()
+{
+};
 
 void reschedule()
 {
@@ -216,15 +219,15 @@ void reschedule()
 	}
 	else if(nr_run_PCB>1)
 	{
-		//printk("%s\n",PCB[i].next->name);
+		b_p();
+		print_tf(PCB[i].next->tf);
 		set_tss((uint32_t)((PCB[i].next)->kstack)+KSTACK_SIZE-8);
 		asm volatile("movw $0x23,%%ax"::);
 		asm volatile("movw %%ax,%%ds"::);
 		asm volatile("movw %%ax,%%es"::);
 		asm volatile("movl %0,%%esp"::"r"(((PCB[i].next)->tf)));
 		asm volatile("popal"::);
-		asm volatile("addl $0x8,%%esp; "::);
-		
+		asm volatile("addl $0x8,%%esp; "::);	
 		asm volatile("iret"::);
 	}
 	else
@@ -263,7 +266,7 @@ void time_treat(struct TrapFrame * TF)
 		(PCB[run_head].next)->time--;		
 		if((PCB[run_head].next)->time==0)
 		{
-			add_PCB(ready_sta,TF,(const char *)((PCB[run_head].next)->name),200,(PCB[run_head].next)->ppid);	
+			add_PCB(ready_sta,TF,(const char *)((PCB[run_head].next)->name),20000,(PCB[run_head].next)->ppid);	
 			//print_tf(TF);
 			//print_tf(&(PCB[ready_head].tf));
 			delete_PCB((PCB[run_head].next)->pid);

@@ -11,6 +11,20 @@
 #define SEG_USER_CODE           3
 #define SEG_USER_DATA 		4
 
+#define pte_t uint32_t
+#define uintptr_t uint32_t
+#define pde_t uint32_t
+#define KERNBASE 0xc0000000
+#define NPDENTRIES 1024
+#define NPTENTRIES 1024
+#define PGSIZE 4096
+#define PDXSHIFT 22
+#define PTE_P 0x1
+#define PTE_W 0x6
+#define PTE_PWT 0x8 //write through
+#define PTE_PCD 0x10 //cache-Disable
+
+
 #include"type.h"
 
 typedef struct SegmentDescriptor {
