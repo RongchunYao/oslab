@@ -32,9 +32,9 @@ int main()
 	init_timer();
 	init_intr();
 	init_idt();
-	init_seg();
-	init_PCB();
+	init_seg();	
 	page_init();
+	init_PCB();
 	load_PCB(102400,"game");
 	reschedule();
 	while(1);		

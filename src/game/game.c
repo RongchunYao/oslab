@@ -146,11 +146,11 @@ int main()
 	//my_exit();
 	while(1)
 	{	
-		print("user pid is %d\n",getpid());
+		my_sleep(1000);
 		print("%dhello! game start! This is the test for print %x\n",123456,123456);
 		game_init(); 
 		while(1)
-		{		
+		{	
 			direction=last_key_code();
 			if(get_time()%200==0)
 			{

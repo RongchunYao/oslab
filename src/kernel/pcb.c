@@ -3,6 +3,7 @@
 #include "mmu.h"
 #include "x86.h"
 #include "pmap.h"
+#define shell_start 204800
 #define NULL 0
 #define run_sta 1
 #define ready_sta 2
@@ -105,6 +106,17 @@ void free_pid(int pid)
 
 void init_PCB()
 {
+	my_memcpy(&pgdir_pool[0][0],kern_pgdir,4*NPDENTRIES);
+	int i;
+	int base = 0x400;
+	for (i = 0; i < base; i++) {
+		pages[i].pp_ref++;
+	}
+	tf_pool[0].eip=load(shell_start,&pgdir_pool[0][0]);
+	tf_pool[0].cs=SEG(SEG_USER_CODE,DPL_USER);
+	tf_pool[0].eflags=USER_FLAG;
+	tf_pool[0].esp=USER_ESP;
+	tf_pool[0].ss=SEG(SEG_USER_DATA,DPL_USER);
 	my_strcpy(PCB[0].name,"init");
 	PCB[0].pid=0;
 	PCB[0].ppid=0;
@@ -112,11 +124,11 @@ void init_PCB()
 	PCB[0].next=NULL;
 	PCB[0].present=1;
 	PCB[0].status=run_sta;
-	PCB[0].time=10;
+	PCB[0].time=100;
+	PCB[0].tf=&tf_pool[0];
 	nr_run_PCB=1;
 	nr_ready_PCB=0;
 	nr_wait_PCB=0;
-	int i;
 	for(i=0;i<NR_PCB;i++)
 	{
 		PCB[i].order=i;
@@ -255,7 +267,15 @@ void reschedule()
 	int i= run_head;
 	if(nr_run_PCB==1&&nr_ready_PCB==0) 
 	{
-		while(1);
+		set_tss((uint32_t)((PCB[0].kstack)+KSTACK_SIZE-8));
+		lcr3((uint32_t)(&(pgdir_pool[0][0]))-KERNBASE);
+		asm volatile("movw $0x23,%%ax"::);
+		asm volatile("movw %%ax,%%ds"::);
+		asm volatile("movw %%ax,%%es"::);
+		asm volatile("movl %0,%%esp"::"r"(PCB[0].tf));
+		asm volatile("popal"::);
+		asm volatile("addl $0x8,%%esp; "::);	
+		asm volatile("iret"::);
 	}
 	else if(nr_run_PCB>1)
 	{
@@ -302,10 +322,6 @@ void reschedule()
 
 void time_treat(struct TrapFrame * TF)
 {
-	if(nr_wait_PCB!=0)
-	{
-		
-	}
 	if(nr_run_PCB!=1)
 	{	
 		(PCB[run_head].next)->time--;		
@@ -316,6 +332,28 @@ void time_treat(struct TrapFrame * TF)
 			reschedule();
 		}
 	}
+	else  
+	{
+		PCB[0].tf=TF;
+	}
+	int flag=0;
+	if(nr_wait_PCB!=0)
+	{
+		struct PCB_type * tmp=&PCB[wait_head];
+		while(tmp)
+		{
+			tmp->time--;
+			if(tmp->time==0) 
+			{	
+				flag=1;
+				add_PCB(ready_sta,tmp->tf,(const char *)tmp->name,200,tmp->ppid,tmp->pid);
+				delete_PCB(tmp->order);
+			}
+			tmp=tmp->next;
+		}
+	}
+	if(flag&&(nr_run_PCB==1)) reschedule();
+	
 	
 }
 
@@ -334,7 +372,6 @@ void load_PCB(uint32_t offset,const char * name)
 	for (i = 0; i < base; i++) {
 		pages[i].pp_ref++;
 	}
-	printk("%x\n",&pgdir_pool[free_pid][0]);
 	tf_pool[free_pid].eip=load(offset,&pgdir_pool[free_pid][0]);
 	tf_pool[free_pid].cs=SEG(SEG_USER_CODE,DPL_USER);
 	tf_pool[free_pid].eflags=USER_FLAG;
@@ -343,4 +380,16 @@ void load_PCB(uint32_t offset,const char * name)
 	add_PCB(run_sta,&tf_pool[free_pid],name,100,0,free_pid);
 }
 
-
+void my_sleep(uint32_t time, struct TrapFrame * TF)
+{
+	if(nr_run_PCB==1)
+	{
+		printk("can not sleep a shell\n");
+	}
+	else
+	{
+		add_PCB(wait_sta,TF,(const char *)((PCB[run_head].next)->name),time,(PCB[run_head].next)->ppid,PCB[run_head].next->pid);	
+		delete_PCB((PCB[run_head].next)->order);
+		reschedule();
+	}
+}
