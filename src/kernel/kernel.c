@@ -18,18 +18,15 @@ extern void init_idt();
 extern void init_seg();
 extern void printk(const char * , ...);
 extern void basic_put(char);
-extern uint32_t load(uint32_t);
+extern void load_PCB(uint32_t,const char* );
 extern void init_PCB();
-extern int add_PCB(uint32_t,struct TrapFrame*,const char*,uint32_t,uint32_t);
 extern void reschedule();
 extern void debug();
-void set_tss(uint32_t);
-struct TrapFrame trap;
-struct TrapFrame trap2;
+extern void page_init();
+
 int main()
 {
 	printk("hello! this is kernel\n");
-	asm volatile("cli"::);
 	disable_interrupt();
 	init_serial();
 	init_timer();
@@ -37,18 +34,8 @@ int main()
 	init_idt();
 	init_seg();
 	init_PCB();
-	trap.eip=load(102400);
-	trap.cs=SEG(user_cs,user_dpl);
-	trap.eflags=0x202;
-	trap.esp=0x1f0000;	
-	trap.ss=SEG(user_ss,user_dpl); 
-	//trap2.eip=load(204800);while(1);
-	//trap2.cs=SEG(user_cs,user_dpl);
-	//trap2.eflags=0x202;
-	//trap2.esp=0x500000;
-	//trap2.ss=SEG(user_ss,user_dpl);
-	add_PCB(run_sta,&trap,"game",10,0);
-	//add_PCB(run_sta,&trap2,"shell",10,0)
+	page_init();
+	load_PCB(102400,"game");
 	reschedule();
 	while(1);		
 }	

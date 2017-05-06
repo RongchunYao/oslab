@@ -6,7 +6,8 @@ OBJ_FILE= game.o video_part.o device.o print.o random.o syslib.o
 
 game: 
 	gcc -m32 -c $(FLAGS) $(SRC_FILE)
-	ld -o game -T game.lds $(OBJ_FILE)
+	ld -o game -e main  $(OBJ_FILE)
+	objdump -d game > game.s
 	chmod +x game.sh
 	./game.sh game
 clean:

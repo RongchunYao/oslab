@@ -1,13 +1,14 @@
 #include "../include/x86.h"
 #include "../include/intr.h"
 
-#define video_start 0xa0000
+#define video_start 0xc00a0000
 #define sys_write 1
 #define sys_clock 2
 #define sys_keyboard 3
 #define sys_video  4
 #define sys_exit 5
 #define sys_pid 6
+#define sys_sleep 7
 extern void print_tf(struct TrapFrame *);
 extern void my_memcpy(void *,const void *,size_t);
 extern void printk(const char * , ...);
@@ -106,6 +107,13 @@ void irq_handle(struct TrapFrame *tf)
 		else if(tf->eax==sys_pid)
 		{
 			tf->eax=getpid();
+		}
+		else if(tf->eax == sys_sleep)
+		{	
+			int time=get_time();
+			asm volatile("sti");
+			while(get_time()<(time+tf->ebx));
+			
 		}
 	}
 	else {

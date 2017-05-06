@@ -11,6 +11,8 @@ void draw_snake(int ,int ,int);
 void draw_food(int ,int ,int);
 void display_all();
 void reset_last_key();
+void my_exit();
+extern void my_sleep(int);
 void srand(int);
 int rand();
 void init();
@@ -139,8 +141,9 @@ void game_init()
 }
 
 
-void game_loop()
+int main()
 {
+	//my_exit();
 	while(1)
 	{	
 		print("user pid is %d\n",getpid());
@@ -183,6 +186,7 @@ void game_loop()
 			if(temp==('r'-'a')){break;}
 		}
 	}
+	return 0;
 }
 
 

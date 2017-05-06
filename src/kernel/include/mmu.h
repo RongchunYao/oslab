@@ -1,5 +1,6 @@
 #ifndef _MMU_H_
 #define _MMU_H_
+#include"type.h"
 
 #define NR_SEGMENT 		16
 #define DPL_KERNEL              0
@@ -10,22 +11,43 @@
 #define SEG_KERNEL_DATA         2
 #define SEG_USER_CODE           3
 #define SEG_USER_DATA 		4
+#define SEG(cs,dpl) ((cs<<3)|dpl)
 
-#define pte_t uint32_t
-#define uintptr_t uint32_t
-#define pde_t uint32_t
+#define KSTACK_SIZE 4096
+#define NR_PCB 60
+#define USER_ESP 0x60fff0
+#define USER_STK_START 0x600000
+#define USER_STK_SIZE 0x10000
+#define USER_FLAG 0x202
+#define PTE_ATTR(pte) (pte&0xFFF)
 #define KERNBASE 0xc0000000
 #define NPDENTRIES 1024
 #define NPTENTRIES 1024
 #define PGSIZE 4096
+#define PGSHIFT 12
+#define PTXSHIFT 12
 #define PDXSHIFT 22
+#define PTSHIFT 22
+#define PTSIZE (PGSIZE* NPTENTRIES)
 #define PTE_P 0x1
-#define PTE_W 0x6
+#define PTE_W 0x2
+#define PTE_U 0x4
 #define PTE_PWT 0x8 //write through
 #define PTE_PCD 0x10 //cache-Disable
+#define PTE_A 0x20
+#define PTE_D 0x40
+#define PTE_PS 0x80
+#define PTE_G  0100
+#define PTE_ADDR(pte) ((physaddr_t) (pte) & ~0xFFF)
 
+#define PHY_MEM (128*1024*1024)
+#define PGNUM(la)   (((uintptr_t)(la))>>PTXSHIFT)
+#define PDX(la)     ((((uintptr_t)(la)) >> PDXSHIFT) & 0x3FF)
+#define PTX(la)    ((((uintptr_t)(la)) >> PTXSHIFT) & 0x3FF)
+#define PGOFF(la)    (((uintptr_t) (la) & 0xFFF)
+#define PGADDR(d,t,o) ((void *) ((d)<<PDXSHIFT | (t) <<PTXSHIFT | (o)))
+#define VA_MEM 0xffffffff
 
-#include"type.h"
 
 typedef struct SegmentDescriptor {
 	uint32_t limit_15_0          : 16;

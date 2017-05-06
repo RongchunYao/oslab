@@ -1,5 +1,9 @@
-#include"include/type.h"
+#include"type.h"
+#include"mmu.h"
+#include"x86.h"
+#include"pmap.h"
 #define SECTSIZE 512
+
 struct ELFHeader {
     unsigned int   magic;
     unsigned char  elf[12];
@@ -28,30 +32,8 @@ struct ProgramHeader {
     unsigned int flags;
     unsigned int align;
 };
+void mm_alloc(pde_t *, uint32_t , size_t);
 
-static __inline uint8_t
-inb(int port)
-{
-	uint8_t data;
-	__asm __volatile("inb %w1,%0" : "=a" (data) : "d" (port));
-	return data;
-}
-
-
-static __inline void
-insl(int port, void *addr, int cnt)
-{
-	__asm __volatile("cld\n\trepne\n\tinsl"			:
-			 "=D" (addr), "=c" (cnt)		:
-			 "d" (port), "0" (addr), "1" (cnt)	:
-			 "memory", "cc");
-}
-
-static __inline void
-outb(int port, uint8_t data)
-{
-	__asm __volatile("outb %0,%w1" : : "a" (data), "d" (port));
-}
 
 void waitdisk()
 {
@@ -87,20 +69,24 @@ void read_disk(uint8_t * paddr, int count, int offset)
 
 
 
-uint32_t load(uint32_t offset)
+uint32_t load(uint32_t offset,pde_t * pgdir)
 {
 	struct ELFHeader *elf;
-	struct ProgramHeader *ph,*obj_ph;
-	elf=(struct ELFHeader*)0x80000;
+	struct ProgramHeader *ph,*obj_ph;	
+	elf=(struct ELFHeader*)0;
+	mm_alloc(pgdir,0,4096);
 	read_disk((uint8_t *)elf,4096,offset);
 	ph = (struct ProgramHeader*)((uint8_t*)elf+elf->phoff);
 	uint8_t * i;
 	obj_ph=ph+elf->phnum;
+	lcr3(PADDR(pgdir));
 	for(;ph<obj_ph;ph++)
 	{
+		mm_alloc(pgdir,ph->paddr,ph->memsz);	
 		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off+offset);
 		for(i=(uint8_t *)(ph->paddr+(ph->filesz));i<(uint8_t *)(ph->paddr+(ph->memsz));*i=0,i++);
 	}
+	mm_alloc(pgdir,USER_STK_START,USER_STK_SIZE);
 	return (uint32_t)(elf->entry);
 }
 

@@ -36,7 +36,7 @@ spin:	jmp	spin
 	.p2align	12	# force page alignment
 	.globl		bootstack
 bootstack:
-	.space		8*1024
+	.space		8*4096
 	.globl		bootstacktop   
 bootstacktop:
 
