@@ -143,7 +143,6 @@ void game_init()
 
 int main()
 {
-	//my_exit();
 	while(1)
 	{	
 		my_sleep(1000);
