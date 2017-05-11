@@ -369,3 +369,31 @@ void free_pgdir(pde_t *pgdir)
 	}
 }
 
+
+void copy_pgdir(pde_t *dst_dir, pde_t *src_dir)
+{
+	struct PageInfo *pp;
+	int pdx, ptx;
+	for (pdx = 0; pdx < NPDENTRIES; ++pdx) {
+		if (src_dir[pdx] & PTE_P) {	
+			if (dst_dir[pdx] & PTE_P) continue;
+			pte_t *src_table = KADDR(PTE_ADDR(src_dir[pdx]));
+
+			pp = page_alloc(ALLOC_ZERO);
+			pp->pp_ref ++;
+
+			dst_dir[pdx] = page2pa(pp) | PTE_ATTR(src_dir[pdx]);
+
+			pte_t *dst_table = KADDR(PTE_ADDR(dst_dir[pdx]));
+			for (ptx = 0; ptx < NPTENTRIES; ++ptx) {
+				if (src_table[ptx] & PTE_P) {
+					pp = page_alloc(0);
+					pp->pp_ref ++;
+					dst_table[ptx] = page2pa(pp) | PTE_ATTR(src_table[ptx]);
+					my_memcpy(page2kva(pp), KADDR(PTE_ADDR(src_table[ptx])), PGSIZE);
+				}
+			}
+		}
+	}
+}
+

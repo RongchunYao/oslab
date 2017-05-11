@@ -9,6 +9,7 @@
 #define sys_exit 5
 #define sys_pid 6
 #define sys_sleep 7
+#define sys_fork 8
 extern void print_tf(struct TrapFrame *);
 extern void my_memcpy(void *,const void *,size_t);
 extern void printk(const char * , ...);
@@ -24,6 +25,7 @@ extern void process_exit();
 extern void my_sleep(uint32_t,struct TrapFrame *);
 extern void time_treat(struct TrapFrame *);
 extern int getpid();
+int my_fork(struct TrapFrame *);
 void irq_handle(struct TrapFrame *tf)
 {
 	if (tf->irq == 1000) {
@@ -81,13 +83,17 @@ void irq_handle(struct TrapFrame *tf)
 		{
 			process_exit();
 		}
-		else if(tf->eax==sys_pid)
+		else if(tf->eax==sys_pid)   
 		{
 			tf->eax=getpid();
 		}
 		else if(tf->eax == sys_sleep)
 		{	
 			my_sleep(tf->ebx,tf);
+		}
+		else if(tf->eax == sys_fork)
+		{
+			tf-> eax =my_fork(tf);
 		}
 	}
 	else {

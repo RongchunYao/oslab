@@ -3,7 +3,7 @@
 #include "mmu.h"
 #include "x86.h"
 #include "pmap.h"
-#define shell_start 204800
+#define init_start 204800
 #define NULL 0
 #define run_sta 1
 #define ready_sta 2
@@ -48,6 +48,7 @@ void my_strcpy(char * dest, const char * src)
 	dest[i]=0;
 }
 
+__attribute__((__aligned__(PGSIZE))) uint8_t kstack[NR_PCB][KSTACK_SIZE];
 
 struct PCB_type {
     int order;  
@@ -60,7 +61,6 @@ struct PCB_type {
     uint32_t time;
     struct PCB_type * next; 
     struct PCB_type * front;
-    uint8_t kstack[KSTACK_SIZE];
 };
 
 struct PCB_type PCB[NR_PCB];
@@ -77,10 +77,35 @@ int wait_tail=0;
 int nr_run_PCB;
 int nr_ready_PCB;
 int nr_wait_PCB;
- 
+
+void list()
+{
+	struct PCB_type * t;
+	t=&PCB[0];
+	while(t)
+	{
+		printk("run process pid is %d name is %s\n",t->pid,t->name);
+		t=t->next;
+	}
+	t=&PCB[ready_head];
+	while(t)
+	{
+		if(ready_head==0) break;
+		printk("ready process pid is %d name is %s\n",t->pid,t->name);
+		t=t->next;
+	}
+	t=&PCB[wait_head];
+	while(t)
+	{
+		if(wait_head==0) break;
+		printk("wait process pid is %d name is %s\n",t->pid,t->name);
+		t=t->next;
+	}
+	printk("over\n");
+}
 void debug()
 {
-	printk("nr_run , nr_ready %d %d\n",nr_run_PCB,nr_ready_PCB);
+	printk("nr_run , nr_ready nr_wait %d %d %d\n",nr_run_PCB,nr_ready_PCB,nr_wait_PCB);
 }
 
 int getpid()
@@ -99,9 +124,11 @@ int get_free_pid()
 	while(1);
 }
 
-void free_pid(int pid)
+void free_a_pid(int pid)
 {
+	printk("free the %d\n",pid);
 	use[pid]=0;
+	//my_memset(&pgdir_pool[pid][0],0,4*NPTENTRIES);
 }
 
 void init_PCB()
@@ -112,7 +139,7 @@ void init_PCB()
 	for (i = 0; i < base; i++) {
 		pages[i].pp_ref++;
 	}
-	tf_pool[0].eip=load(shell_start,&pgdir_pool[0][0]);
+	tf_pool[0].eip=load(init_start,&pgdir_pool[0][0]);
 	tf_pool[0].cs=SEG(SEG_USER_CODE,DPL_USER);
 	tf_pool[0].eflags=USER_FLAG;
 	tf_pool[0].esp=USER_ESP;
@@ -124,7 +151,7 @@ void init_PCB()
 	PCB[0].next=NULL;
 	PCB[0].present=1;
 	PCB[0].status=run_sta;
-	PCB[0].time=100;
+	PCB[0].time=200;
 	PCB[0].tf=&tf_pool[0];
 	nr_run_PCB=1;
 	nr_ready_PCB=0;
@@ -205,8 +232,7 @@ int add_PCB(uint32_t status,struct TrapFrame *trapframe,const char * name,uint32
 
 void delete_PCB(int pid)
 {
-
-	free_pid(PCB[pid].pid);	
+	
 	if(pid==0) {printk("can not delete the initial process"); return;}
 	if(PCB[pid].present==0) {printk("can not delete a NULL process"); return;}
 	PCB[pid].present=0;struct PCB_type * temp;
@@ -235,6 +261,12 @@ void delete_PCB(int pid)
 		}
 		else 
 		{
+			if(pid==ready_head)
+			{
+				ready_head=PCB[pid].next->order;
+				PCB[pid].next->front=0;
+				return;
+			}
 			if(ready_tail==pid) ready_tail=PCB[pid].front->pid;	
 			temp=PCB[pid].front;
 			PCB[pid].front->next=PCB[pid].next;
@@ -252,6 +284,12 @@ void delete_PCB(int pid)
 		}
 		else 
 		{
+			if(pid==wait_head)
+			{
+				wait_head=PCB[pid].next->order;
+				PCB[pid].next->front=0;
+				return;
+			}
 			if(wait_tail==pid) wait_tail=PCB[pid].front->pid;	
 			temp=PCB[pid].front;
 			PCB[pid].front->next=PCB[pid].next;
@@ -264,10 +302,12 @@ void delete_PCB(int pid)
 
 void reschedule()
 {
+	/*debug();
+	*/
 	int i= run_head;
 	if(nr_run_PCB==1&&nr_ready_PCB==0) 
 	{
-		set_tss((uint32_t)((PCB[0].kstack)+KSTACK_SIZE-8));
+		set_tss((uint32_t)((uint32_t)(&kstack[0][0]+KSTACK_SIZE-8)));
 		lcr3((uint32_t)(&(pgdir_pool[0][0]))-KERNBASE);
 		asm volatile("movw $0x23,%%ax"::);
 		asm volatile("movw %%ax,%%ds"::);
@@ -279,8 +319,8 @@ void reschedule()
 	}
 	else if(nr_run_PCB>1)
 	{
-		//print_tf(PCB[i].next->tf);
-		set_tss((uint32_t)((PCB[i].next)->kstack)+KSTACK_SIZE-8);
+		//printk("name is %s\n",PCB[0].next->name);
+		set_tss((uint32_t)((uint32_t)(&kstack[PCB[i].next->pid][0])+KSTACK_SIZE-8));
 		lcr3((uint32_t)(&(pgdir_pool[PCB[i].next->pid][0]))-KERNBASE);
 		asm volatile("movw $0x23,%%ax"::);
 		asm volatile("movw %%ax,%%ds"::);
@@ -306,8 +346,8 @@ void reschedule()
 			temp->status=run_sta;
 			temp=temp->next;
 		}
-	//	printk("%s\n",PCB[i].next->name);
-		set_tss((uint32_t)(&(PCB[i].next)->kstack)+KSTACK_SIZE-8);
+		//printk("name is %s\n",PCB[0].next->name);
+		set_tss((uint32_t)((uint32_t)(&kstack[PCB[i].next->pid][0])+KSTACK_SIZE-8));
 		lcr3((uint32_t)(&(pgdir_pool[PCB[i].next->pid][0]))-KERNBASE);
 		asm volatile("movw $0x23,%%ax"::);
 		asm volatile("movw %%ax,%%ds"::);
@@ -334,7 +374,7 @@ void time_treat(struct TrapFrame * TF)
 	}
 	else  
 	{
-		PCB[0].tf=TF;
+		tf_pool[0]=*TF;
 	}
 	int flag=0;
 	if(nr_wait_PCB!=0)
@@ -347,19 +387,25 @@ void time_treat(struct TrapFrame * TF)
 			{	
 				flag=1;
 				add_PCB(ready_sta,tmp->tf,(const char *)tmp->name,200,tmp->ppid,tmp->pid);
-				delete_PCB(tmp->order);
+				int j=tmp->order;
+				tmp=tmp->next;
+				delete_PCB(j);
+				continue;
 			}
 			tmp=tmp->next;
 		}
 	}
-	if(flag&&(nr_run_PCB==1)) reschedule();
+	if(flag&&(nr_run_PCB==1)) { reschedule();}
 	
 	
 }
 
 void process_exit()
-{
-	delete_PCB((PCB[run_head].next)->pid);
+{	
+	if(nr_run_PCB==1) {printk("can not exit init\n"); return;}
+	printk("process %d exit\n",PCB[run_head].next->pid);	
+	free_a_pid(PCB[run_head].next->pid);
+	delete_PCB((PCB[run_head].next)->order);	
 	reschedule();	
 }
 
@@ -377,14 +423,14 @@ void load_PCB(uint32_t offset,const char * name)
 	tf_pool[free_pid].eflags=USER_FLAG;
 	tf_pool[free_pid].esp=USER_ESP;
 	tf_pool[free_pid].ss=SEG(SEG_USER_DATA,DPL_USER);
-	add_PCB(run_sta,&tf_pool[free_pid],name,100,0,free_pid);
+	add_PCB(run_sta,&tf_pool[free_pid],name,200,0,free_pid);
 }
 
 void my_sleep(uint32_t time, struct TrapFrame * TF)
 {
 	if(nr_run_PCB==1)
 	{
-		printk("can not sleep a shell\n");
+		printk("can not sleep init process\n");
 	}
 	else
 	{
@@ -393,3 +439,23 @@ void my_sleep(uint32_t time, struct TrapFrame * TF)
 		reschedule();
 	}
 }
+
+
+int my_fork(struct TrapFrame * TF)
+{
+	int pid=get_free_pid();
+	printk("get an id %d\n",pid);
+	tf_pool[pid]=*TF;
+	tf_pool[pid].eax=0;
+	if(nr_run_PCB==1)
+	{	
+		printk("user can not fork in init , init is used for doing nothing"); return 0;
+	}
+	my_memcpy(&pgdir_pool[pid][0],kern_pgdir,4*NPDENTRIES);
+	add_PCB(run_sta,&tf_pool[pid],PCB[run_head].next->name,PCB[run_head].next->time,PCB[run_head].next->pid,pid);
+	copy_pgdir(&pgdir_pool[pid][0],&pgdir_pool[PCB[run_head].next->pid][0]);
+	return PCB[run_head].next->pid;
+}
+
+
+

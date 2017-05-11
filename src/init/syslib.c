@@ -18,3 +18,8 @@ void my_exit()
 	asm volatile ("movl $5,%%eax"::);
 	asm volatile ("int $ 0x80"::);
 }
+
+void my_fork()
+{
+	asm volatile ("int $ 0x80"::"a"(8));
+}

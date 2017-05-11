@@ -35,7 +35,10 @@ int main()
 	init_seg();	
 	page_init();
 	init_PCB();
+		
+	load_PCB(307200,"test");
 	load_PCB(102400,"game");
+	debug();
 	reschedule();
 	while(1);		
 }	
