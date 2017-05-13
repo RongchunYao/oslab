@@ -1,2 +1,0 @@
-# oslab
-finish lab3
