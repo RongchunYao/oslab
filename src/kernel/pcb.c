@@ -230,28 +230,28 @@ int add_PCB(uint32_t status,struct TrapFrame *trapframe,const char * name,uint32
 	return i;
 }
 
-void delete_PCB(int pid)
+void delete_PCB(int order)
 {
 	
-	if(pid==0) {printk("can not delete the initial process"); return;}
-	if(PCB[pid].present==0) {printk("can not delete a NULL process"); return;}
-	PCB[pid].present=0;struct PCB_type * temp;
-	if(PCB[pid].status==run_sta)
+	if(order==0) {printk("can not delete the initial process"); return;}
+	if(PCB[order].present==0) {printk("can not delete a NULL process"); return;}
+	PCB[order].present=0;struct PCB_type * temp;
+	if(PCB[order].status==run_sta)
 	{
-		if(run_tail==pid)
+		if(run_tail==order)
 		{
-		run_tail=PCB[pid].front->pid;
-		PCB[pid].front->next=PCB[pid].next;
+		run_tail=PCB[order].front->order;
+		PCB[order].front->next=PCB[order].next;
 		}
 		else
 		{
-			temp=PCB[pid].front;
-			PCB[pid].front->next=PCB[pid].next;
-			PCB[pid].next->front=temp;
+			temp=PCB[order].front;
+			PCB[order].front->next=PCB[order].next;
+			PCB[order].next->front=temp;
 		}
 		nr_run_PCB--;
 	}
-	else if(PCB[pid].status==ready_sta)
+	else if(PCB[order].status==ready_sta)
 	{
 		nr_ready_PCB--;
 		if(nr_ready_PCB==0) 
@@ -261,16 +261,16 @@ void delete_PCB(int pid)
 		}
 		else 
 		{
-			if(pid==ready_head)
+			if(order==ready_head)
 			{
-				ready_head=PCB[pid].next->order;
-				PCB[pid].next->front=0;
+				ready_head=PCB[order].next->order;
+				PCB[order].next->front=0;
 				return;
 			}
-			if(ready_tail==pid) ready_tail=PCB[pid].front->pid;	
-			temp=PCB[pid].front;
-			PCB[pid].front->next=PCB[pid].next;
-			if(PCB[pid].next) PCB[pid].next->front=temp;
+			if(ready_tail==order) ready_tail=PCB[order].front->order;	
+			temp=PCB[order].front;
+			PCB[order].front->next=PCB[order].next;
+			if(PCB[order].next) PCB[order].next->front=temp;
 		}
 		
 	}
@@ -284,16 +284,16 @@ void delete_PCB(int pid)
 		}
 		else 
 		{
-			if(pid==wait_head)
+			if(order==wait_head)
 			{
-				wait_head=PCB[pid].next->order;
-				PCB[pid].next->front=0;
+				wait_head=PCB[order].next->order;
+				PCB[order].next->front=0;
 				return;
 			}
-			if(wait_tail==pid) wait_tail=PCB[pid].front->pid;	
-			temp=PCB[pid].front;
-			PCB[pid].front->next=PCB[pid].next;
-			if(PCB[pid].next) PCB[pid].next->front=temp;
+			if(wait_tail==order) wait_tail=PCB[order].front->order;	
+			temp=PCB[order].front;
+			PCB[order].front->next=PCB[order].next;
+			if(PCB[order].next) PCB[order].next->front=temp;
 		}
 		
 	}
