@@ -1,5 +1,6 @@
-#include "../include/x86.h"
-#include "../include/intr.h"
+#include "x86.h"
+#include "intr.h"
+#include "mmu.h"
 
 #define video_start 0xc00a0000
 #define sys_write 1
@@ -30,6 +31,7 @@ void irq_handle(struct TrapFrame *tf)
 {
 	if (tf->irq == 1000) {
 		timer_event();
+		if(tf->cs==SEG(SEG_KERNEL_CODE,DPL_KERNEL)) return;
 		time_treat(tf);
 	} else if (tf->irq == 1001) {
 		uint32_t code = inb(0x60);

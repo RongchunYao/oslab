@@ -20,7 +20,7 @@ int nr_snake;
 int win_or_lose;
 char mark_str[10];
 extern int getpid();
-
+int my_fork();
 typedef struct
 {
 	int color;
@@ -146,6 +146,7 @@ int main()
 	while(1)
 	{	
 		my_sleep(1000);
+		//my_fork();
 		print("%dhello! game start! This is the test for print %x\n",123456,123456);
 		game_init(); 
 		while(1)

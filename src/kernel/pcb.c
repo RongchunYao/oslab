@@ -126,9 +126,9 @@ int get_free_pid()
 
 void free_a_pid(int pid)
 {
-	printk("free the %d\n",pid);
+	printk("free the pid %d\n",pid);
 	use[pid]=0;
-	//my_memset(&pgdir_pool[pid][0],0,4*NPTENTRIES);
+
 }
 
 void init_PCB()
