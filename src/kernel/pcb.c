@@ -126,9 +126,7 @@ int get_free_pid()
 
 void free_a_pid(int pid)
 {
-	printk("free the pid %d\n",pid);
 	use[pid]=0;
-
 }
 
 void init_PCB()
@@ -384,7 +382,8 @@ void time_treat(struct TrapFrame * TF)
 		{
 			tmp->time--;
 			if(tmp->time==0) 
-			{	
+			{
+				printk("process %d wake up\n",tmp->pid);	
 				flag=1;
 				add_PCB(ready_sta,tmp->tf,(const char *)tmp->name,200,tmp->ppid,tmp->pid);
 				int j=tmp->order;
@@ -434,6 +433,7 @@ void my_sleep(uint32_t time, struct TrapFrame * TF)
 	}
 	else
 	{
+		printk("process %d sleep %d ms\n",PCB[run_head].next->pid,time);
 		add_PCB(wait_sta,TF,(const char *)((PCB[run_head].next)->name),time,(PCB[run_head].next)->ppid,PCB[run_head].next->pid);	
 		delete_PCB((PCB[run_head].next)->order);
 		reschedule();
@@ -444,7 +444,7 @@ void my_sleep(uint32_t time, struct TrapFrame * TF)
 int my_fork(struct TrapFrame * TF)
 {
 	int pid=get_free_pid();
-	printk("get an id %d\n",pid);
+	printk("get an free id %d\n",pid);
 	tf_pool[pid]=*TF;
 	tf_pool[pid].eax=0;
 	if(nr_run_PCB==1)
