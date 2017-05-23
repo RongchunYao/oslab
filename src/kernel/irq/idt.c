@@ -1,5 +1,5 @@
-#include "../include/x86.h"
-#include "../include/intr.h"
+#include "x86.h"
+#include "intr.h"
 
 #define INTERRUPT_GATE_32 0xE
 #define TRAP_GATE_32 0xF
