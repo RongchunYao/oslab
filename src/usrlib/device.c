@@ -1,4 +1,4 @@
-inline int get_time()
+int get_time()
 {
 	int time;
 	asm volatile ("movl $2,%%eax"::);

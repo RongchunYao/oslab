@@ -1,6 +1,5 @@
 #include"type.h"
 #include "syslib.h"
-#include "print.h"
 #include "string.h"
 
 int main()

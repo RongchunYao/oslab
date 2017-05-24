@@ -1,13 +1,10 @@
-static int seed = 0;
+#ifndef _random_H_
+#define _random_H_
 
 void
-srand(int s) {
-	seed = s;
-}
+srand(int ) ;
 
 int
-rand(void) {
-	seed = 0x015A4E35 * seed + 1;
-	return (seed >> 16) & 0x7FFF;
-}
+rand(void) ;
 
+#endif

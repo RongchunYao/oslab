@@ -1,12 +1,10 @@
-#ifndef _print_H_
-#define _print_H_
 #include "type.h"
-
-char buffer[1000];
-volatile int pointer;
+static char buffer[1000];
+volatile static int pointer;
 
 void change(int a,char * b)
 {
+	//warning this function is dangerous 
 	int sum=0;
 	char f[100];	
 	int i=0;
@@ -91,5 +89,3 @@ void my_memcpy(void *dest, const void *src, size_t size) {
 void my_memset(void *dest, int data, size_t size) {
 	asm volatile ("cld; rep stosb" : : "c"(size), "a"(data), "D"(dest));
 }
-
-#endif 

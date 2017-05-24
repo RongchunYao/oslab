@@ -2,25 +2,21 @@
 #define game_over "GAME OVER"
 #define game_win  "YOU WIN"
 #include "type.h"
+#include "device.h"
+#include "syslib.h"
+#include "random.h"
 int mark;
-void time_pop();
-void change(int ,char *);
 void draw_string(const char *, int , int , int) ;
 void draw_big_string(const char*, int ,int , int);
 void draw_snake(int ,int ,int);
 void draw_food(int ,int ,int);
 void display_all();
-void reset_last_key();
-void my_exit();
-extern void my_sleep(int);
-void srand(int);
-int rand();
+
 void init();
 int nr_snake;
 int win_or_lose;
 char mark_str[10];
-extern int getpid();
-int my_fork();
+
 typedef struct
 {
 	int color;

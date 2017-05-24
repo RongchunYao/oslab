@@ -1,3 +1,4 @@
+
 int getpid()
 {
 	int pid;
@@ -24,3 +25,4 @@ int my_fork()
 	asm volatile ("movl %%eax,%0":"=a"(i):);
 	return i;
 }
+

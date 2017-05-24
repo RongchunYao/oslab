@@ -8,37 +8,37 @@ Disassembly of section .text:
  8048094:	55                   	push   %ebp
  8048095:	89 e5                	mov    %esp,%ebp
  8048097:	83 ec 08             	sub    $0x8,%esp
- 804809a:	a1 2c d3 05 08       	mov    0x805d32c,%eax
+ 804809a:	a1 ec d6 05 08       	mov    0x805d6ec,%eax
  804809f:	83 e8 01             	sub    $0x1,%eax
  80480a2:	83 ec 08             	sub    $0x8,%esp
- 80480a5:	68 10 a4 05 08       	push   $0x805a410
+ 80480a5:	68 d0 a7 05 08       	push   $0x805a7d0
  80480aa:	50                   	push   %eax
  80480ab:	e8 86 0b 00 00       	call   8048c36 <change>
  80480b0:	83 c4 10             	add    $0x10,%esp
- 80480b3:	a1 2c d3 05 08       	mov    0x805d32c,%eax
+ 80480b3:	a1 ec d6 05 08       	mov    0x805d6ec,%eax
  80480b8:	83 f8 0a             	cmp    $0xa,%eax
  80480bb:	7f 18                	jg     80480d5 <draw_mark+0x41>
  80480bd:	6a 2f                	push   $0x2f
  80480bf:	68 38 01 00 00       	push   $0x138
  80480c4:	6a 00                	push   $0x0
- 80480c6:	68 10 a4 05 08       	push   $0x805a410
+ 80480c6:	68 d0 a7 05 08       	push   $0x805a7d0
  80480cb:	e8 c3 08 00 00       	call   8048993 <draw_string>
  80480d0:	83 c4 10             	add    $0x10,%esp
  80480d3:	eb 38                	jmp    804810d <draw_mark+0x79>
- 80480d5:	a1 2c d3 05 08       	mov    0x805d32c,%eax
+ 80480d5:	a1 ec d6 05 08       	mov    0x805d6ec,%eax
  80480da:	83 f8 64             	cmp    $0x64,%eax
  80480dd:	7f 18                	jg     80480f7 <draw_mark+0x63>
  80480df:	6a 2f                	push   $0x2f
  80480e1:	68 30 01 00 00       	push   $0x130
  80480e6:	6a 00                	push   $0x0
- 80480e8:	68 10 a4 05 08       	push   $0x805a410
+ 80480e8:	68 d0 a7 05 08       	push   $0x805a7d0
  80480ed:	e8 a1 08 00 00       	call   8048993 <draw_string>
  80480f2:	83 c4 10             	add    $0x10,%esp
  80480f5:	eb 16                	jmp    804810d <draw_mark+0x79>
  80480f7:	6a 2f                	push   $0x2f
  80480f9:	68 28 01 00 00       	push   $0x128
  80480fe:	6a 00                	push   $0x0
- 8048100:	68 10 a4 05 08       	push   $0x805a410
+ 8048100:	68 d0 a7 05 08       	push   $0x805a7d0
  8048105:	e8 89 08 00 00       	call   8048993 <draw_string>
  804810a:	83 c4 10             	add    $0x10,%esp
  804810d:	c9                   	leave  
@@ -56,21 +56,21 @@ Disassembly of section .text:
  8048124:	01 c0                	add    %eax,%eax
  8048126:	01 d0                	add    %edx,%eax
  8048128:	c1 e0 02             	shl    $0x2,%eax
- 804812b:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 804812b:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048130:	8b 18                	mov    (%eax),%ebx
  8048132:	8b 55 f4             	mov    -0xc(%ebp),%edx
  8048135:	89 d0                	mov    %edx,%eax
  8048137:	01 c0                	add    %eax,%eax
  8048139:	01 d0                	add    %edx,%eax
  804813b:	c1 e0 02             	shl    $0x2,%eax
- 804813e:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 804813e:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048143:	8b 48 08             	mov    0x8(%eax),%ecx
  8048146:	8b 55 f4             	mov    -0xc(%ebp),%edx
  8048149:	89 d0                	mov    %edx,%eax
  804814b:	01 c0                	add    %eax,%eax
  804814d:	01 d0                	add    %edx,%eax
  804814f:	c1 e0 02             	shl    $0x2,%eax
- 8048152:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048152:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048157:	8b 40 04             	mov    0x4(%eax),%eax
  804815a:	83 ec 04             	sub    $0x4,%esp
  804815d:	53                   	push   %ebx
@@ -79,7 +79,7 @@ Disassembly of section .text:
  8048160:	e8 19 09 00 00       	call   8048a7e <draw_snake>
  8048165:	83 c4 10             	add    $0x10,%esp
  8048168:	83 45 f4 01          	addl   $0x1,-0xc(%ebp)
- 804816c:	a1 00 a4 05 08       	mov    0x805a400,%eax
+ 804816c:	a1 c0 a7 05 08       	mov    0x805a7c0,%eax
  8048171:	39 45 f4             	cmp    %eax,-0xc(%ebp)
  8048174:	7e a9                	jle    804811f <draw_whole_snake+0x10>
  8048176:	8b 0d 8c a9 04 08    	mov    0x804a98c,%ecx
@@ -111,35 +111,35 @@ Disassembly of section .text:
  80481bd:	55                   	push   %ebp
  80481be:	89 e5                	mov    %esp,%ebp
  80481c0:	83 ec 18             	sub    $0x18,%esp
- 80481c3:	a1 50 a4 05 08       	mov    0x805a450,%eax
- 80481c8:	a3 44 a4 05 08       	mov    %eax,0x805a444
- 80481cd:	a1 54 a4 05 08       	mov    0x805a454,%eax
- 80481d2:	a3 48 a4 05 08       	mov    %eax,0x805a448
- 80481d7:	a1 4c a4 05 08       	mov    0x805a44c,%eax
- 80481dc:	a3 40 a4 05 08       	mov    %eax,0x805a440
- 80481e1:	8b 15 00 a4 05 08    	mov    0x805a400,%edx
+ 80481c3:	a1 10 a8 05 08       	mov    0x805a810,%eax
+ 80481c8:	a3 04 a8 05 08       	mov    %eax,0x805a804
+ 80481cd:	a1 14 a8 05 08       	mov    0x805a814,%eax
+ 80481d2:	a3 08 a8 05 08       	mov    %eax,0x805a808
+ 80481d7:	a1 0c a8 05 08       	mov    0x805a80c,%eax
+ 80481dc:	a3 00 a8 05 08       	mov    %eax,0x805a800
+ 80481e1:	8b 15 c0 a7 05 08    	mov    0x805a7c0,%edx
  80481e7:	89 d0                	mov    %edx,%eax
  80481e9:	01 c0                	add    %eax,%eax
  80481eb:	01 d0                	add    %edx,%eax
  80481ed:	c1 e0 02             	shl    $0x2,%eax
- 80481f0:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 80481f0:	05 00 a8 05 08       	add    $0x805a800,%eax
  80481f5:	8b 40 04             	mov    0x4(%eax),%eax
- 80481f8:	a3 08 a4 05 08       	mov    %eax,0x805a408
- 80481fd:	8b 15 00 a4 05 08    	mov    0x805a400,%edx
+ 80481f8:	a3 c8 a7 05 08       	mov    %eax,0x805a7c8
+ 80481fd:	8b 15 c0 a7 05 08    	mov    0x805a7c0,%edx
  8048203:	89 d0                	mov    %edx,%eax
  8048205:	01 c0                	add    %eax,%eax
  8048207:	01 d0                	add    %edx,%eax
  8048209:	c1 e0 02             	shl    $0x2,%eax
- 804820c:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 804820c:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048211:	8b 40 08             	mov    0x8(%eax),%eax
- 8048214:	a3 0c a4 05 08       	mov    %eax,0x805a40c
+ 8048214:	a3 cc a7 05 08       	mov    %eax,0x805a7cc
  8048219:	a1 80 a9 04 08       	mov    0x804a980,%eax
  804821e:	85 c0                	test   %eax,%eax
  8048220:	75 24                	jne    8048246 <do_move+0x89>
- 8048222:	a1 54 a4 05 08       	mov    0x805a454,%eax
+ 8048222:	a1 14 a8 05 08       	mov    0x805a814,%eax
  8048227:	83 e8 08             	sub    $0x8,%eax
- 804822a:	a3 54 a4 05 08       	mov    %eax,0x805a454
- 804822f:	a1 54 a4 05 08       	mov    0x805a454,%eax
+ 804822a:	a3 14 a8 05 08       	mov    %eax,0x805a814
+ 804822f:	a1 14 a8 05 08       	mov    0x805a814,%eax
  8048234:	85 c0                	test   %eax,%eax
  8048236:	0f 89 84 00 00 00    	jns    80482c0 <do_move+0x103>
  804823c:	b8 00 00 00 00       	mov    $0x0,%eax
@@ -147,10 +147,10 @@ Disassembly of section .text:
  8048246:	a1 80 a9 04 08       	mov    0x804a980,%eax
  804824b:	83 f8 12             	cmp    $0x12,%eax
  804824e:	75 23                	jne    8048273 <do_move+0xb6>
- 8048250:	a1 50 a4 05 08       	mov    0x805a450,%eax
+ 8048250:	a1 10 a8 05 08       	mov    0x805a810,%eax
  8048255:	83 c0 08             	add    $0x8,%eax
- 8048258:	a3 50 a4 05 08       	mov    %eax,0x805a450
- 804825d:	a1 50 a4 05 08       	mov    0x805a450,%eax
+ 8048258:	a3 10 a8 05 08       	mov    %eax,0x805a810
+ 804825d:	a1 10 a8 05 08       	mov    0x805a810,%eax
  8048262:	3d c7 00 00 00       	cmp    $0xc7,%eax
  8048267:	7e 57                	jle    80482c0 <do_move+0x103>
  8048269:	b8 00 00 00 00       	mov    $0x0,%eax
@@ -158,42 +158,42 @@ Disassembly of section .text:
  8048273:	a1 80 a9 04 08       	mov    0x804a980,%eax
  8048278:	83 f8 03             	cmp    $0x3,%eax
  804827b:	75 23                	jne    80482a0 <do_move+0xe3>
- 804827d:	a1 54 a4 05 08       	mov    0x805a454,%eax
+ 804827d:	a1 14 a8 05 08       	mov    0x805a814,%eax
  8048282:	83 c0 08             	add    $0x8,%eax
- 8048285:	a3 54 a4 05 08       	mov    %eax,0x805a454
- 804828a:	a1 54 a4 05 08       	mov    0x805a454,%eax
+ 8048285:	a3 14 a8 05 08       	mov    %eax,0x805a814
+ 804828a:	a1 14 a8 05 08       	mov    0x805a814,%eax
  804828f:	3d 3f 01 00 00       	cmp    $0x13f,%eax
  8048294:	7e 2a                	jle    80482c0 <do_move+0x103>
  8048296:	b8 00 00 00 00       	mov    $0x0,%eax
  804829b:	e9 45 03 00 00       	jmp    80485e5 <do_move+0x428>
- 80482a0:	a1 50 a4 05 08       	mov    0x805a450,%eax
+ 80482a0:	a1 10 a8 05 08       	mov    0x805a810,%eax
  80482a5:	83 e8 08             	sub    $0x8,%eax
- 80482a8:	a3 50 a4 05 08       	mov    %eax,0x805a450
- 80482ad:	a1 50 a4 05 08       	mov    0x805a450,%eax
+ 80482a8:	a3 10 a8 05 08       	mov    %eax,0x805a810
+ 80482ad:	a1 10 a8 05 08       	mov    0x805a810,%eax
  80482b2:	85 c0                	test   %eax,%eax
  80482b4:	79 0a                	jns    80482c0 <do_move+0x103>
  80482b6:	b8 00 00 00 00       	mov    $0x0,%eax
  80482bb:	e9 25 03 00 00       	jmp    80485e5 <do_move+0x428>
- 80482c0:	a1 00 a4 05 08       	mov    0x805a400,%eax
+ 80482c0:	a1 c0 a7 05 08       	mov    0x805a7c0,%eax
  80482c5:	89 45 f4             	mov    %eax,-0xc(%ebp)
  80482c8:	e9 96 00 00 00       	jmp    8048363 <do_move+0x1a6>
  80482cd:	83 7d f4 02          	cmpl   $0x2,-0xc(%ebp)
  80482d1:	75 36                	jne    8048309 <do_move+0x14c>
- 80482d3:	8b 0d 44 a4 05 08    	mov    0x805a444,%ecx
+ 80482d3:	8b 0d 04 a8 05 08    	mov    0x805a804,%ecx
  80482d9:	8b 55 f4             	mov    -0xc(%ebp),%edx
  80482dc:	89 d0                	mov    %edx,%eax
  80482de:	01 c0                	add    %eax,%eax
  80482e0:	01 d0                	add    %edx,%eax
  80482e2:	c1 e0 02             	shl    $0x2,%eax
- 80482e5:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 80482e5:	05 00 a8 05 08       	add    $0x805a800,%eax
  80482ea:	89 48 04             	mov    %ecx,0x4(%eax)
- 80482ed:	8b 0d 48 a4 05 08    	mov    0x805a448,%ecx
+ 80482ed:	8b 0d 08 a8 05 08    	mov    0x805a808,%ecx
  80482f3:	8b 55 f4             	mov    -0xc(%ebp),%edx
  80482f6:	89 d0                	mov    %edx,%eax
  80482f8:	01 c0                	add    %eax,%eax
  80482fa:	01 d0                	add    %edx,%eax
  80482fc:	c1 e0 02             	shl    $0x2,%eax
- 80482ff:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 80482ff:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048304:	89 48 08             	mov    %ecx,0x8(%eax)
  8048307:	eb 56                	jmp    804835f <do_move+0x1a2>
  8048309:	8b 45 f4             	mov    -0xc(%ebp),%eax
@@ -202,14 +202,14 @@ Disassembly of section .text:
  8048311:	01 c0                	add    %eax,%eax
  8048313:	01 d0                	add    %edx,%eax
  8048315:	c1 e0 02             	shl    $0x2,%eax
- 8048318:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048318:	05 00 a8 05 08       	add    $0x805a800,%eax
  804831d:	8b 48 04             	mov    0x4(%eax),%ecx
  8048320:	8b 55 f4             	mov    -0xc(%ebp),%edx
  8048323:	89 d0                	mov    %edx,%eax
  8048325:	01 c0                	add    %eax,%eax
  8048327:	01 d0                	add    %edx,%eax
  8048329:	c1 e0 02             	shl    $0x2,%eax
- 804832c:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 804832c:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048331:	89 48 04             	mov    %ecx,0x4(%eax)
  8048334:	8b 45 f4             	mov    -0xc(%ebp),%eax
  8048337:	8d 50 ff             	lea    -0x1(%eax),%edx
@@ -217,49 +217,49 @@ Disassembly of section .text:
  804833c:	01 c0                	add    %eax,%eax
  804833e:	01 d0                	add    %edx,%eax
  8048340:	c1 e0 02             	shl    $0x2,%eax
- 8048343:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048343:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048348:	8b 48 08             	mov    0x8(%eax),%ecx
  804834b:	8b 55 f4             	mov    -0xc(%ebp),%edx
  804834e:	89 d0                	mov    %edx,%eax
  8048350:	01 c0                	add    %eax,%eax
  8048352:	01 d0                	add    %edx,%eax
  8048354:	c1 e0 02             	shl    $0x2,%eax
- 8048357:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048357:	05 00 a8 05 08       	add    $0x805a800,%eax
  804835c:	89 48 08             	mov    %ecx,0x8(%eax)
  804835f:	83 6d f4 01          	subl   $0x1,-0xc(%ebp)
  8048363:	83 7d f4 01          	cmpl   $0x1,-0xc(%ebp)
  8048367:	0f 8f 60 ff ff ff    	jg     80482cd <do_move+0x110>
- 804836d:	8b 15 50 a4 05 08    	mov    0x805a450,%edx
+ 804836d:	8b 15 10 a8 05 08    	mov    0x805a810,%edx
  8048373:	a1 84 a9 04 08       	mov    0x804a984,%eax
  8048378:	39 c2                	cmp    %eax,%edx
  804837a:	0f 85 f5 01 00 00    	jne    8048575 <do_move+0x3b8>
- 8048380:	8b 15 54 a4 05 08    	mov    0x805a454,%edx
+ 8048380:	8b 15 14 a8 05 08    	mov    0x805a814,%edx
  8048386:	a1 88 a9 04 08       	mov    0x804a988,%eax
  804838b:	39 c2                	cmp    %eax,%edx
  804838d:	0f 85 e2 01 00 00    	jne    8048575 <do_move+0x3b8>
- 8048393:	a1 2c d3 05 08       	mov    0x805d32c,%eax
+ 8048393:	a1 ec d6 05 08       	mov    0x805d6ec,%eax
  8048398:	83 c0 01             	add    $0x1,%eax
- 804839b:	a3 2c d3 05 08       	mov    %eax,0x805d32c
- 80483a0:	a1 00 a4 05 08       	mov    0x805a400,%eax
+ 804839b:	a3 ec d6 05 08       	mov    %eax,0x805d6ec
+ 80483a0:	a1 c0 a7 05 08       	mov    0x805a7c0,%eax
  80483a5:	83 c0 01             	add    $0x1,%eax
- 80483a8:	a3 00 a4 05 08       	mov    %eax,0x805a400
- 80483ad:	8b 15 00 a4 05 08    	mov    0x805a400,%edx
- 80483b3:	8b 0d 08 a4 05 08    	mov    0x805a408,%ecx
+ 80483a8:	a3 c0 a7 05 08       	mov    %eax,0x805a7c0
+ 80483ad:	8b 15 c0 a7 05 08    	mov    0x805a7c0,%edx
+ 80483b3:	8b 0d c8 a7 05 08    	mov    0x805a7c8,%ecx
  80483b9:	89 d0                	mov    %edx,%eax
  80483bb:	01 c0                	add    %eax,%eax
  80483bd:	01 d0                	add    %edx,%eax
  80483bf:	c1 e0 02             	shl    $0x2,%eax
- 80483c2:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 80483c2:	05 00 a8 05 08       	add    $0x805a800,%eax
  80483c7:	89 48 04             	mov    %ecx,0x4(%eax)
- 80483ca:	8b 15 00 a4 05 08    	mov    0x805a400,%edx
- 80483d0:	8b 0d 0c a4 05 08    	mov    0x805a40c,%ecx
+ 80483ca:	8b 15 c0 a7 05 08    	mov    0x805a7c0,%edx
+ 80483d0:	8b 0d cc a7 05 08    	mov    0x805a7cc,%ecx
  80483d6:	89 d0                	mov    %edx,%eax
  80483d8:	01 c0                	add    %eax,%eax
  80483da:	01 d0                	add    %edx,%eax
  80483dc:	c1 e0 02             	shl    $0x2,%eax
- 80483df:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 80483df:	05 00 a8 05 08       	add    $0x805a800,%eax
  80483e4:	89 48 08             	mov    %ecx,0x8(%eax)
- 80483e7:	a1 00 a4 05 08       	mov    0x805a400,%eax
+ 80483e7:	a1 c0 a7 05 08       	mov    0x805a7c0,%eax
  80483ec:	89 45 ec             	mov    %eax,-0x14(%ebp)
  80483ef:	eb 2d                	jmp    804841e <do_move+0x261>
  80483f1:	8b 45 ec             	mov    -0x14(%ebp),%eax
@@ -268,20 +268,20 @@ Disassembly of section .text:
  80483f9:	01 c0                	add    %eax,%eax
  80483fb:	01 d0                	add    %edx,%eax
  80483fd:	c1 e0 02             	shl    $0x2,%eax
- 8048400:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048400:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048405:	8b 08                	mov    (%eax),%ecx
  8048407:	8b 55 ec             	mov    -0x14(%ebp),%edx
  804840a:	89 d0                	mov    %edx,%eax
  804840c:	01 c0                	add    %eax,%eax
  804840e:	01 d0                	add    %edx,%eax
  8048410:	c1 e0 02             	shl    $0x2,%eax
- 8048413:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048413:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048418:	89 08                	mov    %ecx,(%eax)
  804841a:	83 6d ec 01          	subl   $0x1,-0x14(%ebp)
  804841e:	83 7d ec 01          	cmpl   $0x1,-0x14(%ebp)
  8048422:	7f cd                	jg     80483f1 <do_move+0x234>
  8048424:	a1 8c a9 04 08       	mov    0x804a98c,%eax
- 8048429:	a3 4c a4 05 08       	mov    %eax,0x805a44c
+ 8048429:	a3 0c a8 05 08       	mov    %eax,0x805a80c
  804842e:	e8 eb 0b 00 00       	call   804901e <rand>
  8048433:	89 c1                	mov    %eax,%ecx
  8048435:	ba 83 20 08 82       	mov    $0x82082083,%edx
@@ -361,7 +361,7 @@ Disassembly of section .text:
  8048512:	01 c0                	add    %eax,%eax
  8048514:	01 d0                	add    %edx,%eax
  8048516:	c1 e0 02             	shl    $0x2,%eax
- 8048519:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048519:	05 00 a8 05 08       	add    $0x805a800,%eax
  804851e:	8b 50 04             	mov    0x4(%eax),%edx
  8048521:	a1 84 a9 04 08       	mov    0x804a984,%eax
  8048526:	39 c2                	cmp    %eax,%edx
@@ -371,7 +371,7 @@ Disassembly of section .text:
  804852f:	01 c0                	add    %eax,%eax
  8048531:	01 d0                	add    %edx,%eax
  8048533:	c1 e0 02             	shl    $0x2,%eax
- 8048536:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048536:	05 00 a8 05 08       	add    $0x805a800,%eax
  804853b:	8b 50 08             	mov    0x8(%eax),%edx
  804853e:	a1 88 a9 04 08       	mov    0x804a988,%eax
  8048543:	39 c2                	cmp    %eax,%edx
@@ -379,7 +379,7 @@ Disassembly of section .text:
  8048547:	c7 45 f0 01 00 00 00 	movl   $0x1,-0x10(%ebp)
  804854e:	90                   	nop
  804854f:	83 45 f4 01          	addl   $0x1,-0xc(%ebp)
- 8048553:	a1 00 a4 05 08       	mov    0x805a400,%eax
+ 8048553:	a1 c0 a7 05 08       	mov    0x805a7c0,%eax
  8048558:	39 45 f4             	cmp    %eax,-0xc(%ebp)
  804855b:	7e b0                	jle    804850d <do_move+0x350>
  804855d:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
@@ -391,33 +391,33 @@ Disassembly of section .text:
  8048570:	e9 ed fe ff ff       	jmp    8048462 <do_move+0x2a5>
  8048575:	c7 45 f4 02 00 00 00 	movl   $0x2,-0xc(%ebp)
  804857c:	eb 47                	jmp    80485c5 <do_move+0x408>
- 804857e:	8b 0d 50 a4 05 08    	mov    0x805a450,%ecx
+ 804857e:	8b 0d 10 a8 05 08    	mov    0x805a810,%ecx
  8048584:	8b 55 f4             	mov    -0xc(%ebp),%edx
  8048587:	89 d0                	mov    %edx,%eax
  8048589:	01 c0                	add    %eax,%eax
  804858b:	01 d0                	add    %edx,%eax
  804858d:	c1 e0 02             	shl    $0x2,%eax
- 8048590:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 8048590:	05 00 a8 05 08       	add    $0x805a800,%eax
  8048595:	8b 40 04             	mov    0x4(%eax),%eax
  8048598:	39 c1                	cmp    %eax,%ecx
  804859a:	75 25                	jne    80485c1 <do_move+0x404>
- 804859c:	8b 0d 54 a4 05 08    	mov    0x805a454,%ecx
+ 804859c:	8b 0d 14 a8 05 08    	mov    0x805a814,%ecx
  80485a2:	8b 55 f4             	mov    -0xc(%ebp),%edx
  80485a5:	89 d0                	mov    %edx,%eax
  80485a7:	01 c0                	add    %eax,%eax
  80485a9:	01 d0                	add    %edx,%eax
  80485ab:	c1 e0 02             	shl    $0x2,%eax
- 80485ae:	05 40 a4 05 08       	add    $0x805a440,%eax
+ 80485ae:	05 00 a8 05 08       	add    $0x805a800,%eax
  80485b3:	8b 40 08             	mov    0x8(%eax),%eax
  80485b6:	39 c1                	cmp    %eax,%ecx
  80485b8:	75 07                	jne    80485c1 <do_move+0x404>
  80485ba:	b8 00 00 00 00       	mov    $0x0,%eax
  80485bf:	eb 24                	jmp    80485e5 <do_move+0x428>
  80485c1:	83 45 f4 01          	addl   $0x1,-0xc(%ebp)
- 80485c5:	a1 00 a4 05 08       	mov    0x805a400,%eax
+ 80485c5:	a1 c0 a7 05 08       	mov    0x805a7c0,%eax
  80485ca:	39 45 f4             	cmp    %eax,-0xc(%ebp)
  80485cd:	7e af                	jle    804857e <do_move+0x3c1>
- 80485cf:	a1 00 a4 05 08       	mov    0x805a400,%eax
+ 80485cf:	a1 c0 a7 05 08       	mov    0x805a7c0,%eax
  80485d4:	83 f8 32             	cmp    $0x32,%eax
  80485d7:	75 07                	jne    80485e0 <do_move+0x423>
  80485d9:	b8 02 00 00 00       	mov    $0x2,%eax
@@ -430,7 +430,7 @@ Disassembly of section .text:
  80485e7:	55                   	push   %ebp
  80485e8:	89 e5                	mov    %esp,%ebp
  80485ea:	83 ec 08             	sub    $0x8,%esp
- 80485ed:	c7 05 2c d3 05 08 00 	movl   $0x0,0x805d32c
+ 80485ed:	c7 05 ec d6 05 08 00 	movl   $0x0,0x805d6ec
  80485f4:	00 00 00 
  80485f7:	e8 e0 05 00 00       	call   8048bdc <get_time>
  80485fc:	89 c1                	mov    %eax,%ecx
@@ -449,21 +449,21 @@ Disassembly of section .text:
  8048620:	50                   	push   %eax
  8048621:	e8 eb 09 00 00       	call   8049011 <srand>
  8048626:	83 c4 10             	add    $0x10,%esp
- 8048629:	c7 05 00 a4 05 08 02 	movl   $0x2,0x805a400
+ 8048629:	c7 05 c0 a7 05 08 02 	movl   $0x2,0x805a7c0
  8048630:	00 00 00 
- 8048633:	c7 05 30 d3 05 08 01 	movl   $0x1,0x805d330
+ 8048633:	c7 05 f0 d6 05 08 01 	movl   $0x1,0x805d6f0
  804863a:	00 00 00 
- 804863d:	c7 05 50 a4 05 08 60 	movl   $0x60,0x805a450
+ 804863d:	c7 05 10 a8 05 08 60 	movl   $0x60,0x805a810
  8048644:	00 00 00 
- 8048647:	c7 05 54 a4 05 08 60 	movl   $0x60,0x805a454
+ 8048647:	c7 05 14 a8 05 08 60 	movl   $0x60,0x805a814
  804864e:	00 00 00 
- 8048651:	c7 05 4c a4 05 08 01 	movl   $0x1,0x805a44c
+ 8048651:	c7 05 0c a8 05 08 01 	movl   $0x1,0x805a80c
  8048658:	00 00 00 
- 804865b:	c7 05 5c a4 05 08 60 	movl   $0x60,0x805a45c
+ 804865b:	c7 05 1c a8 05 08 60 	movl   $0x60,0x805a81c
  8048662:	00 00 00 
- 8048665:	c7 05 60 a4 05 08 68 	movl   $0x68,0x805a460
+ 8048665:	c7 05 20 a8 05 08 68 	movl   $0x68,0x805a820
  804866c:	00 00 00 
- 804866f:	c7 05 58 a4 05 08 06 	movl   $0x6,0x805a458
+ 804866f:	c7 05 18 a8 05 08 06 	movl   $0x6,0x805a818
  8048676:	00 00 00 
  8048679:	e8 1c fb ff ff       	call   804819a <make_food>
  804867e:	e8 a2 05 00 00       	call   8048c25 <reset_last_key>
@@ -508,12 +508,12 @@ Disassembly of section .text:
  80486f7:	75 4c                	jne    8048745 <main+0xc0>
  80486f9:	e8 ed 00 00 00       	call   80487eb <init>
  80486fe:	e8 ba fa ff ff       	call   80481bd <do_move>
- 8048703:	a3 30 d3 05 08       	mov    %eax,0x805d330
- 8048708:	a1 30 d3 05 08       	mov    0x805d330,%eax
+ 8048703:	a3 f0 d6 05 08       	mov    %eax,0x805d6f0
+ 8048708:	a1 f0 d6 05 08       	mov    0x805d6f0,%eax
  804870d:	83 f8 01             	cmp    $0x1,%eax
  8048710:	74 0c                	je     804871e <main+0x99>
  8048712:	90                   	nop
- 8048713:	a1 30 d3 05 08       	mov    0x805d330,%eax
+ 8048713:	a1 f0 d6 05 08       	mov    0x805d6f0,%eax
  8048718:	85 c0                	test   %eax,%eax
  804871a:	75 60                	jne    804877c <main+0xf7>
  804871c:	eb 2c                	jmp    804874a <main+0xc5>
@@ -1287,11 +1287,11 @@ Disassembly of section .text:
  8048f61:	83 ec 04             	sub    $0x4,%esp
  8048f64:	8b 45 08             	mov    0x8(%ebp),%eax
  8048f67:	88 45 fc             	mov    %al,-0x4(%ebp)
- 8048f6a:	a1 40 d3 05 08       	mov    0x805d340,%eax
+ 8048f6a:	a1 a8 a7 05 08       	mov    0x805a7a8,%eax
  8048f6f:	8d 50 01             	lea    0x1(%eax),%edx
- 8048f72:	89 15 40 d3 05 08    	mov    %edx,0x805d340
+ 8048f72:	89 15 a8 a7 05 08    	mov    %edx,0x805a7a8
  8048f78:	0f b6 55 fc          	movzbl -0x4(%ebp),%edx
- 8048f7c:	88 90 80 d3 05 08    	mov    %dl,0x805d380(%eax)
+ 8048f7c:	88 90 c0 a3 05 08    	mov    %dl,0x805a3c0(%eax)
  8048f82:	c9                   	leave  
  8048f83:	c3                   	ret    
 
@@ -1302,7 +1302,7 @@ Disassembly of section .text:
  8048f88:	83 ec 14             	sub    $0x14,%esp
  8048f8b:	8d 45 0c             	lea    0xc(%ebp),%eax
  8048f8e:	89 45 f4             	mov    %eax,-0xc(%ebp)
- 8048f91:	c7 05 40 d3 05 08 00 	movl   $0x0,0x805d340
+ 8048f91:	c7 05 a8 a7 05 08 00 	movl   $0x0,0x805a7a8
  8048f98:	00 00 00 
  8048f9b:	8b 45 08             	mov    0x8(%ebp),%eax
  8048f9e:	83 ec 04             	sub    $0x4,%esp
@@ -1311,10 +1311,10 @@ Disassembly of section .text:
  8048fa5:	68 5e 8f 04 08       	push   $0x8048f5e
  8048faa:	e8 18 fe ff ff       	call   8048dc7 <v_fprintf>
  8048faf:	83 c4 10             	add    $0x10,%esp
- 8048fb2:	a1 40 d3 05 08       	mov    0x805d340,%eax
- 8048fb7:	c6 80 80 d3 05 08 00 	movb   $0x0,0x805d380(%eax)
+ 8048fb2:	a1 a8 a7 05 08       	mov    0x805a7a8,%eax
+ 8048fb7:	c6 80 c0 a3 05 08 00 	movb   $0x0,0x805a3c0(%eax)
  8048fbe:	c7 45 f0 01 00 00 00 	movl   $0x1,-0x10(%ebp)
- 8048fc5:	ba 80 d3 05 08       	mov    $0x805d380,%edx
+ 8048fc5:	ba c0 a3 05 08       	mov    $0x805a3c0,%edx
  8048fca:	8b 45 f0             	mov    -0x10(%ebp),%eax
  8048fcd:	bb 01 00 00 00       	mov    $0x1,%ebx
  8048fd2:	89 d1                	mov    %edx,%ecx
@@ -1364,18 +1364,18 @@ Disassembly of section .text:
  8049011:	55                   	push   %ebp
  8049012:	89 e5                	mov    %esp,%ebp
  8049014:	8b 45 08             	mov    0x8(%ebp),%eax
- 8049017:	a3 c0 a3 05 08       	mov    %eax,0x805a3c0
+ 8049017:	a3 ac a7 05 08       	mov    %eax,0x805a7ac
  804901c:	5d                   	pop    %ebp
  804901d:	c3                   	ret    
 
 0804901e <rand>:
  804901e:	55                   	push   %ebp
  804901f:	89 e5                	mov    %esp,%ebp
- 8049021:	a1 c0 a3 05 08       	mov    0x805a3c0,%eax
+ 8049021:	a1 ac a7 05 08       	mov    0x805a7ac,%eax
  8049026:	69 c0 35 4e 5a 01    	imul   $0x15a4e35,%eax,%eax
  804902c:	83 c0 01             	add    $0x1,%eax
- 804902f:	a3 c0 a3 05 08       	mov    %eax,0x805a3c0
- 8049034:	a1 c0 a3 05 08       	mov    0x805a3c0,%eax
+ 804902f:	a3 ac a7 05 08       	mov    %eax,0x805a7ac
+ 8049034:	a1 ac a7 05 08       	mov    0x805a7ac,%eax
  8049039:	c1 f8 10             	sar    $0x10,%eax
  804903c:	25 ff 7f 00 00       	and    $0x7fff,%eax
  8049041:	5d                   	pop    %ebp

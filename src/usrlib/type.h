@@ -15,8 +15,11 @@ typedef  uint32_t pte_t;
 typedef  uint32_t uintptr_t;
 typedef  uint32_t pde_t;
 typedef  uint32_t physaddr_t;
-typedef  uint32_t sem_t;
-void printk(const char *ctl, ...);
+
+void __attribute__((__noinline__)) 
+print(const char *, ...);
+
+void change(int ,char* b);
 void my_memcpy(void *, const void *,  size_t) ;
 void my_memset(void *, int, size_t);
 
