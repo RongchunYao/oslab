@@ -5,8 +5,10 @@ KER= src/kernel
 GAME= src/game
 INIT= src/init
 TEST= src/test
+LIB= src/usrlib
 
 run:
+	cd $(LIB) && make lib
 	cd $(BOOT) && make mbr
 	cd $(GAME) && make game
 	cd $(KER) && make kernel
@@ -31,3 +33,4 @@ clean:
 	cd $(KER) && make clean
 	cd $(INIT) && make clean
 	cd $(TEST) && make clean
+	cd $(LIB) && make clean
