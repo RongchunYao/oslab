@@ -4,7 +4,7 @@ CFILE= *.c
 OFILE= *.o
 FLAGS= -Wall -Werror  
 test:
-	gcc -c $(FLAGS) -m32 -fno-stack-protector -I include $(CFILE) 
+	gcc -c $(FLAGS) -m32 -fno-stack-protector -I ../usrlib $(CFILE) 
 	mv $(OFILE) OBJ
 	cd OBJ && ld -o ../test -e main $(OFILE)
 	chmod +x test.sh

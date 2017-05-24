@@ -1,3 +1,5 @@
+#ifndef _print_H_
+#define _print_H_
 #include "type.h"
 
 char buffer[1000];
@@ -89,3 +91,5 @@ void my_memcpy(void *dest, const void *src, size_t size) {
 void my_memset(void *dest, int data, size_t size) {
 	asm volatile ("cld; rep stosb" : : "c"(size), "a"(data), "D"(dest));
 }
+
+#endif 
