@@ -2,12 +2,35 @@
 #include "syslib.h"
 #include "string.h"
 
+char a[]="fuck you bitch";
+char b[]="fuck you damn bitch";
+
+sem_t sem;
+
+void * fuck(void * arg)
+{	
+	sem_wait(&sem);
+	sem_wait(&sem);
+	print("%s\n",(char *)arg);
+	sem_post(&sem);
+	my_exit();
+	return (void *) 0;
+}
+
+void * fuck2(void * arg)
+{	
+	sem_wait(&sem);
+	print("%s\n",(char *)arg);
+	sem_post(&sem);
+	my_exit();
+	return (void *) 0;
+}
+
 int main()
 {	
-	char a[10];
-	my_strcpy(a,"hell",10);
-	int f=my_strcmp(a,"hel");
-	print("ans is %d\n",f);
+	sem_init(&sem,1);
+	my_pthread(fuck,(void *) a);
+	//my_pthread(fuck,(void *) b);
 	my_exit();
 	return 0;
 }

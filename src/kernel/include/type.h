@@ -19,4 +19,12 @@ void printk(const char *ctl, ...);
 void my_memcpy(void *, const void *,  size_t) ;
 void my_memset(void *, int, size_t);
 
+typedef struct 
+{
+	int val;
+	int present;
+	int wait[10];
+	int nr_wait;
+}sem_t;
+
 #endif

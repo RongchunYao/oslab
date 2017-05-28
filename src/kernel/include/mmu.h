@@ -16,8 +16,9 @@
 #define KSTACK_SIZE 4096
 #define NR_PCB 60
 #define USER_ESP 0x60fff0
+#define USER_ARG 0x60fff4
 #define USER_STK_START 0x600000
-#define USER_STK_SIZE 0x10000
+#define USER_STK_SIZE   0x10000
 #define USER_FLAG 0x202
 #define PTE_ATTR(pte) (pte&0xFFF)
 #define KERNBASE 0xc0000000

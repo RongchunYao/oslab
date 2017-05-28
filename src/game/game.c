@@ -5,6 +5,7 @@
 #include "device.h"
 #include "syslib.h"
 #include "random.h"
+#include "string.h"
 int mark;
 void draw_string(const char *, int , int , int) ;
 void draw_big_string(const char*, int ,int , int);

@@ -1,7 +1,8 @@
 #include "x86.h"
 #include "intr.h"
 #include "mmu.h"
-
+#include "type.h"
+#include "sem.h"
 #define video_start 0xc00a0000
 #define sys_write 1
 #define sys_clock 2
@@ -11,9 +12,14 @@
 #define sys_pid 6
 #define sys_sleep 7
 #define sys_fork 8
+#define sys_pthread 9
+#define sys_sem_init 10
+#define sys_sem_destroy 11
+#define sys_sem_wait 12
+#define sys_sem_post 13
+#define sys_sem_trywait 14
+
 extern void print_tf(struct TrapFrame *);
-extern void my_memcpy(void *,const void *,size_t);
-extern void printk(const char * , ...);
 extern void timer_event();
 extern void keyboard_event(int);
 extern void serial_out(char);
@@ -26,6 +32,7 @@ extern void process_exit();
 extern void my_sleep(uint32_t,struct TrapFrame *);
 extern void time_treat(struct TrapFrame *);
 extern int getpid();
+int pthread_create(void *, void *);
 int my_fork(struct TrapFrame *);
 void irq_handle(struct TrapFrame *tf)
 {
@@ -96,6 +103,30 @@ void irq_handle(struct TrapFrame *tf)
 		else if(tf->eax == sys_fork)
 		{
 			tf-> eax =my_fork(tf);
+		}
+		else if(tf->eax == sys_pthread)
+		{
+			tf->eax= pthread_create((void *)tf->ebx, (void *)tf->ecx);
+		}
+		else if(tf->eax == sys_sem_init)
+		{
+			tf->eax= sem_init((sem_t *)tf->ebx,tf->ecx);
+		}
+		else if(tf->eax ==sys_sem_destroy)
+		{
+			tf->eax= sem_destroy((sem_t *)tf->ebx);
+		}
+		else if(tf-> eax ==sys_sem_wait)
+		{
+			tf->eax= sem_wait((sem_t *)tf->ebx,tf);
+		}
+		else if(tf->eax == sys_sem_post)
+		{
+			tf->eax= sem_post((sem_t *)tf->ebx);
+		}
+		else if(tf->eax == sys_sem_trywait)
+		{
+			tf->eax= sem_trywait((sem_t *)tf->ebx);
 		}
 	}
 	else {
