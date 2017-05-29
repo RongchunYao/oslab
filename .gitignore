@@ -3,3 +3,7 @@ image
 test
 game
 kernel
+kernel.s
+usrlib.a
+test.s
+game.s
