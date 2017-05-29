@@ -28,7 +28,7 @@ void * producer(void * arg)
 void * consumer(void * arg)
 {	
 	while(1)
-	{
+	{ 
 		if(sem_wait(&product)==0)
 		{
 			sem_post(&empty);
