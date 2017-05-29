@@ -1,15 +1,19 @@
 #include"type.h"
 #include "syslib.h"
 #include "string.h"
+#include "random.h"
 
-#define max 10
+#define max 5
 
 char a[]="Hi I am producer";
-char b[]="Hi I am consumer";
-
-sem_t product;
+char b[]="Hi I am consumer1";
+char b2[]="Hi I am consumer2";
+sem_t full;
 sem_t empty;
+sem_t mutex;
 
+int pointer=0;
+int buf[max];
 
 void * producer(void * arg)
 {	
@@ -17,8 +21,14 @@ void * producer(void * arg)
 	{
 		if(sem_wait(&empty)==0)
 		{
-			sem_post(&product);
-			print("%s ,I produce a product \n",arg);
+			if(sem_wait(&mutex)==0)
+			{
+				sem_post(&full);
+				buf[pointer]=rand()%100;
+				print("%s ,I create %d\n",arg,buf[pointer]);
+				pointer++;
+			}
+			sem_post(&mutex);
 		}
 	}
 	my_exit();
@@ -29,10 +39,16 @@ void * consumer(void * arg)
 {	
 	while(1)
 	{ 
-		if(sem_wait(&product)==0)
+		if(sem_wait(&full)==0)
 		{
-			sem_post(&empty);
-			print("%s ,I consume a product \n",arg);
+			if(sem_wait(&mutex)==0)
+			{
+				sem_post(&empty);
+				pointer--;
+				print("%s ,I consum %d\n",arg,buf[pointer]);
+				
+			}
+			sem_post(&mutex);
 		}
 	}
 	my_exit();
@@ -41,10 +57,13 @@ void * consumer(void * arg)
 
 int main()
 {	
-	if(sem_init(&product,0)<0) {   print("sem init fail\n");  while(1);} 
-	if(sem_init(&empty,max)<0) {   print("sem init fail\n");  while(1);} 
+	srand(0x1010);
+	if(sem_init(&full,0)<0) {   print("sem init fail\n");  while(1);} 
+	if(sem_init(&empty,max)<0) {   print("sem init fail\n");  while(1);}
+	if(sem_init(&mutex,1)<0) {   print("sem init fail\n");  while(1);} 
 	my_pthread(producer,(void *) a);
 	my_pthread(consumer,(void *) b);
+	my_pthread(consumer,(void *) b2);
 	my_exit();
 	return 0;
 }
