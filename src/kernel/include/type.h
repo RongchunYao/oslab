@@ -1,6 +1,7 @@
 #ifndef _TYPE_H_
 #define _TYPE_H_
 
+#define max_wait 10
 typedef int bool;
 typedef int int32_t;
 typedef unsigned int uint32_t;
@@ -23,7 +24,7 @@ typedef struct
 {
 	int val;
 	int present;
-	int wait[10];
+	int wait[max_wait];
 	int nr_wait;
 }sem_t;
 
