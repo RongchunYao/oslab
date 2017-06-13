@@ -1,7 +1,7 @@
 #define SECTSIZE 512
 #include "common.h"
 #include "boot.h"
-
+#define keroffset 0x411000
 void waitdisk()
 {
 	 while ((inb(0x1F7) & 0xC0) != 0x40);
@@ -41,13 +41,13 @@ void boot_main()
 	struct ELFHeader *elf;
 	struct ProgramHeader *ph,*obj_ph;
 	elf=(struct ELFHeader*)0x80000;
-	read_disk((uint8_t *)elf,4096,0);
+	read_disk((uint8_t *)elf,4096,keroffset);
 	ph = (struct ProgramHeader*)((uint8_t*)elf+elf->phoff);
 	uint8_t * i;
 	obj_ph=ph+elf->phnum;
 	for(;ph<obj_ph;ph++)
 	{
-		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off);
+		read_disk((uint8_t*)(ph->paddr),ph->filesz,ph->off+keroffset);
 		for(i=(uint8_t *)(ph->paddr+(ph->filesz));i<(uint8_t *)(ph->paddr+(ph->memsz));*i=0,i++);
 	}
 	((void(*)(void))elf->entry)();

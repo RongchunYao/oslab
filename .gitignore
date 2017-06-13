@@ -7,3 +7,9 @@ kernel.s
 usrlib.a
 test.s
 game.s
+firstblock.bin
+t27block.bin
+inodemap.bin
+blockmap.bin
+inode.bin
+maker

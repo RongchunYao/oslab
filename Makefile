@@ -18,6 +18,14 @@ run:
 	echo "make successfully"
 	qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio  image
 
+disk:
+	
+	cd $(LIB) && make lib
+	cd $(BOOT) && make mbr
+	cd $(KER) && make kernel
+	./formatter.sh
+	qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio image	
+
 gdb:	
 	cd $(BOOT) && make mbr
 	cd $(GAME) && make game

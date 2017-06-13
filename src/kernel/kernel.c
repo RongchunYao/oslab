@@ -27,6 +27,7 @@ extern void page_init();
 int main()
 {
 	printk("hello! this is kernel\n");
+	while(1);
 	disable_interrupt();
 	init_serial();
 	init_timer();
@@ -35,9 +36,8 @@ int main()
 	init_seg();	
 	page_init();
 	init_PCB();
-	load_PCB(307200,"test");
-	load_PCB(102400,"game");
-	debug();
+	//load_PCB(307200,"test");
+	//load_PCB(102400,"game");
 	reschedule();
 	while(1);		
 }	
