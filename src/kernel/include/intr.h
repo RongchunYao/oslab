@@ -11,6 +11,9 @@
 
 #define NR_IRQ    256
 
+void init_idt();
+void init_intr();
+
 struct GateDescriptor {
 	uint32_t offset_15_0      : 16;
 	uint32_t segment          : 16;

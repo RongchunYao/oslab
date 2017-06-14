@@ -1,3 +1,5 @@
+	g++ -o maker disk.cpp
+	./maker
 	dd if=/dev/zero of=./disk.bin bs=1024 count=131072
 	dd if=firstblock.bin of=./disk.bin conv=notrunc
 	dd if=src/kernel/kernel  of=./disk.bin seek=8  conv=notrunc
