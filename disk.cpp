@@ -50,24 +50,24 @@ int main()
 
 	ofstream of3("inode.bin",ios::binary|ios::out);	
 	strcpy(c.name,"/");
-	c.i_size=3;
+	c.i_size=2;
 	c.i_type=0;
-	c.block[0]=1;
+	c.block[0]=0;
 	of3.write((char *)(&c),sizeof(c));
 	strcpy(c.name,"kernel/");
 	c.i_size=102400;
 	c.i_type=0;
-	c.block[0]=2;
-	c.block[1]=3;
-	c.block[2]=4;
-	c.block[3]=5;
-	c.block[4]=6;
-        c.block[5]=7;
-        c.block[6]=8;
-        c.block[7]=9;
-	c.block[8]=10;
-	c.block[9]=11;
-	c.block[10]=27;
+	c.block[0]=1;
+	c.block[1]=2;
+	c.block[2]=3;
+	c.block[3]=4;
+	c.block[4]=5;
+        c.block[5]=6;
+        c.block[6]=7;
+        c.block[7]=8;
+	c.block[8]=9;
+	c.block[9]=10;
+	c.block[10]=26;
 	of3.write((char *)(&c),sizeof(c));	
 	for(int i=2;i<nrinode;i++)
 	{
@@ -81,20 +81,19 @@ int main()
 
 	my_index=1;
 	of4.write((char *)(&my_index),sizeof my_index);
-	my_index=2;
-	of4.write((char *)(&my_index),sizeof my_index);
+
 	my_index=0;
-	for(int j=3;j<blocksz/direntrysz;j++)
+	for(int j=2;j<blocksz/direntrysz;j++)
 {	of4.write((char *)(&my_index),sizeof my_index);}
 	of4.close();
 
 	ofstream of5("t27block.bin",ios::out|ios::binary);
-	for(my_index=12;my_index<=26;my_index++)
+	for(my_index=11;my_index<=25;my_index++)
 	{
 		of5.write((char *)(&my_index),sizeof my_index);
 	}	
 	my_index=0;
-	for(int j=15;j<blocksz/4;j++)
+	for(int j=16;j<blocksz/4;j++)
 	of5.write((char *)(&my_index),sizeof my_index);
 	of5.close();
 

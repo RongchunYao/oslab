@@ -8,8 +8,8 @@ game:
 	mv *.o OBJ
 	cd OBJ && ld -o ../game -e main  *.o ../../usrlib/usrlib.a
 	objdump -d game > game.s
-	chmod +x game.sh
-	./game.sh game
+#	chmod +x game.sh
+#	./game.sh game
 clean:
 	cd OBJ && rm *.o
 	rm game
