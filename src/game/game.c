@@ -43,7 +43,7 @@ void draw_mark()
 
 extern int last_key_code();
 extern int get_time();
-
+extern void list_all();
 static int direction; //snake moving direction
 static int x;         //food position  
 static int y;         //food position
@@ -142,8 +142,6 @@ int main()
 {
 	while(1)
 	{	
-		my_sleep(1000);
-		//my_fork();
 		print("%dhello! game start! This is the test for print %x\n",123456,123456);
 		game_init(); 
 		while(1)

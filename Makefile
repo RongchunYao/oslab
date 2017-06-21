@@ -6,25 +6,19 @@ GAME= src/game
 INIT= src/init
 TEST= src/test
 LIB= src/usrlib
+DISK= tools
 
-run:
+run:	
 	cd $(LIB) && make lib
 	cd $(BOOT) && make mbr
-	cd $(GAME) && make game
 	cd $(KER) && make kernel
+	cd $(GAME) && make game
 	cd $(INIT) && make init
 	cd $(TEST) && make test
-	cat ./boot/mbr ./src/kernel/kernel ./src/game/game ./src/init/init ./src/test/test > image
+	cd $(DISK) && make disk
 	echo "make successfully"
-	qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio  image
-
-disk:
-	
-	cd $(LIB) && make lib
-	cd $(BOOT) && make mbr
-	cd $(KER) && make kernel
-	./formatter.sh
-	qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio image	
+	qemu-system-i386 -monitor telnet:127.0.0.1:1111,server,nowait -serial stdio image
+		
 
 gdb:	
 	cd $(BOOT) && make mbr
@@ -42,3 +36,4 @@ clean:
 	cd $(INIT) && make clean
 	cd $(TEST) && make clean
 	cd $(LIB) && make clean
+	cd $(DISK) && make clean

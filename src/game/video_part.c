@@ -22,8 +22,7 @@
 // Contains an 8x8 font map for unicode points U+0000 - U+007F (basic latin)
 
 
-
-static char font8x8_basic[128][8] = {
+char font8x8_basic[128][8] = {
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0000 (nul)
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0001
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0002
@@ -163,6 +162,24 @@ static uint8_t display_buf[display_size];
 void my_memset(void *, int , size_t);
 void my_memcpy(void *, const void *, size_t) ;
 
+/*
+void list_all()
+{
+	int i,j;unsigned char f;
+	int out;
+	for(i=0;i<128;i++)
+	{
+		for(j=0;j<8;j++)
+		{
+			f=font8x8_basic[i][j];
+			out=f;
+			print("0x%x   ",out);
+		}
+		print("\n");
+	}	
+}
+*/
+	
 static inline void
 draw_pixel(int x, int y, int color) {
 	display_buf[(x << 8) + (x << 6) + y] = color;

@@ -54,7 +54,7 @@ int main()
 	c.i_type=0;
 	c.block[0]=0;
 	of3.write((char *)(&c),sizeof(c));
-	strcpy(c.name,"kernel/");
+	strcpy(c.name,"kernel");
 	c.i_size=102400;
 	c.i_type=0;
 	c.block[0]=1;

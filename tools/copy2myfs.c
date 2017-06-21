@@ -101,8 +101,9 @@ int cutname(char *src)
 		}
 		names[nr_names][f]=0;
 		if(valid) nr_names++;
+		if(nr_names>=maxdir) return -1;
 	}
-	if(nr_names==0||nr_names>=maxdir) return -1;
+	if(nr_names==0) return -1;
 	else return 0;
 }
 

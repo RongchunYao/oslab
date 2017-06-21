@@ -17,11 +17,8 @@ int main()
 	init_seg();	
 	page_init();
 	init_PCB();
-	load_maps();
-	open("/kernel");
-	while(1);
-	//load_PCB(307200,"test");
-	//load_PCB(102400,"game");
+	init_file();
+	file_load_PCB("game","game");
 	reschedule();
 	while(1);		
 }	
