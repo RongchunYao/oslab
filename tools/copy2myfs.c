@@ -134,7 +134,7 @@ int main(int argc, char ** argv)
 	nr_block=size/blocksz;	
 	if(size%4096) nr_block++;
 	printf("size is %llu\n",size);
-	fd2=fopen("image","rb+");
+	fd2=fopen("../image","rb+");
 	fseek(fd2,512,SEEK_SET);	
 	fread((void *)inodemap,nrinode,1,fd2);
 	fread((void *)blockmap,nrblock,1,fd2);
@@ -169,15 +169,16 @@ int main(int argc, char ** argv)
 		}
 	}
 	dirnode=cur;
-	printf("inode is %d\n",cur);
 	fseek(fd2,cur*inodesz+inodeoffset,SEEK_SET);		
 	fread((void *)&tmpnode,sizeof tmpnode,1,fd2);
 	int index=get_free_inode();
 	fseek(fd2,512,SEEK_SET);
-	fwrite((void *) inodemap,sizeof inodemap,1,fd2);
+	//fwrite((void *) inodemap,sizeof inodemap,1,fd2);
 	int nr=tmpnode.i_size;
+	
 	if(tmpnode.i_size>=1024) printf("can not support over 1024 files in one dir\n");
 	tmpnode.i_size++;
+	//printf("name is %s, size is %d\n",tmpnode.name,tmpnode.i_size);
 	int blockindex=tmpnode.block[0];
 	fseek(fd2,dirnode*inodesz+inodeoffset,SEEK_SET);
 	fwrite((void *)&tmpnode,sizeof tmpnode,1,fd2);

@@ -13,3 +13,6 @@ inodemap.bin
 blockmap.bin
 inode.bin
 maker
+checkdisk
+copy2myfs
+read_myfs

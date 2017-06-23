@@ -50,7 +50,7 @@ int main()
 
 	ofstream of3("inode.bin",ios::binary|ios::out);	
 	strcpy(c.name,"/");
-	c.i_size=2;
+	c.i_size=1;
 	c.i_type=0;
 	c.block[0]=0;
 	of3.write((char *)(&c),sizeof(c));
@@ -76,14 +76,12 @@ int main()
 	of3.close();	
 
 	ofstream of4("firstblock.bin",ios::binary|ios::out);
-	my_index=0;
-	of4.write((char *)(&my_index),sizeof my_index);
 
 	my_index=1;
 	of4.write((char *)(&my_index),sizeof my_index);
 
 	my_index=0;
-	for(int j=2;j<blocksz/direntrysz;j++)
+	for(int j=1;j<blocksz/direntrysz;j++)
 {	of4.write((char *)(&my_index),sizeof my_index);}
 	of4.close();
 

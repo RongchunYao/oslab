@@ -95,7 +95,7 @@ int main(int argc, char ** argv)
 	fd=fopen(names[nr_names-1],"w+");
 	if(!fd) {printf("can not open the file!\n"); return 0;}
 	FILE * fd2;
-	fd2=fopen("image","rb+");
+	fd2=fopen("../image","rb+");
 
 	int cur=0;
 	int filenode;
@@ -115,9 +115,10 @@ int main(int argc, char ** argv)
 			fseek(fd2,block[j]*inodesz+inodeoffset,SEEK_SET);
 			fread((void *)&tmpnode,sizeof tmpnode,1,fd2);	
 			//printf(" names[i]%s\n",names[i]);
-			//printf(" tmpnodename %s\n",tmpnode.name);
 			if(strcmp(names[i],tmpnode.name)!=0) {continue; }
-			else { cur=block[j];  flag=1; break;}
+			else {
+			printf("size is %d, tmpnodename %s\n",tmpnode.i_size,tmpnode.name);
+				 cur=block[j];  flag=1; break;}
 		}
 		if(j==child_num&&flag==0)  {printf("no such a file \n"); return 0;}
 	}

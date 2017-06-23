@@ -3,6 +3,7 @@
 #include "mmu.h"
 #include "type.h"
 #include "sem.h"
+#include "file.h"
 #define video_start 0xc00a0000
 #define sys_write 1
 #define sys_clock 2
@@ -18,7 +19,12 @@
 #define sys_sem_wait 12
 #define sys_sem_post 13
 #define sys_sem_trywait 14
-
+#define sys_open 15
+#define sys_close 16
+#define sys_lseek 17
+#define sys_read 18
+#define sys_file_write 19
+#define sys_open_check 20
 extern void print_tf(struct TrapFrame *);
 extern void timer_event();
 extern void keyboard_event(int);
@@ -128,6 +134,34 @@ void irq_handle(struct TrapFrame *tf)
 		{
 			tf->eax= sem_trywait((sem_t *)tf->ebx);
 		}
+		else if(tf->eax == sys_open)
+		{
+			FILE * fd;
+			fd=open((char *)tf->ebx);
+			tf->eax=(uint32_t)fd;
+		}
+		else if(tf->eax == sys_close)
+		{
+			tf->eax=close((FILE *)(tf->ebx));
+		}
+		else if(tf->eax == sys_lseek) 
+		{
+			tf->eax=lseek((FILE *)tf->ebx,tf->ecx,tf->edx);
+		}
+		else if(tf->eax == sys_read)
+		{
+			tf->eax=read((FILE *)tf->ebx,(uint8_t *)tf->ecx,tf->edx);
+		}
+		else if(tf->eax == sys_file_write)
+		{
+			tf->eax=write((FILE *)tf->ebx,(uint8_t *)tf->ecx,tf->edx);
+		}
+		else if(tf->eax == sys_open_check)
+		{
+			tf->eax=open_check((FILE *)tf->ebx);
+		}
+
+		
 	}
 	else {
 		print_tf(tf);

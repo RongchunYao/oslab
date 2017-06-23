@@ -1,4 +1,5 @@
-#include"type.h"
+#include"syslib.h"
+
 int getpid()
 {
 	int pid;
@@ -75,7 +76,52 @@ int sem_post(sem_t * sem)
 
 }
 
+FILE * open(char * name)
+{	
+	FILE * i;
+	asm volatile ("int $ 0x80"::"a"(15),"b"(name));
+	asm volatile ("movl %%eax,%0":"=a"(i):);
+	return i;
+}
 
+int close(FILE * fd)
+{
+	int   i;
+	asm volatile ("int $ 0x80"::"a"(16),"b"(fd));
+	asm volatile ("movl %%eax,%0":"=a"(i):);
+	return i;
+}
 
+int lseek( FILE *fd, int off, int where)
+{
+	int i;
+	asm volatile ("int $ 0x80"::"a"(17),"b"(fd),"c"(off),"d"(where));
+	asm volatile ("movl %%eax,%0":"=a"(i):);
+	return i;
+}
+
+int read(FILE *fd , uint8_t *buf,int len)
+{
+	int i;
+	asm volatile ("int $ 0x80"::"a"(18),"b"(fd),"c"(buf),"d"(len));
+	asm volatile ("movl %%eax,%0":"=a"(i):);
+	return i;
+} 
+
+int write(FILE *fd , uint8_t *buf,int len)
+{
+	int i;
+	asm volatile ("int $ 0x80"::"a"(19),"b"(fd),"c"(buf),"d"(len));
+	asm volatile ("movl %%eax,%0":"=a"(i):);
+	return i;
+} 
+
+int open_check(FILE * fd)
+{
+	int i;
+	asm volatile ("int $ 0x80"::"a"(20),"b"(fd));
+	asm volatile ("movl %%eax,%0":"=a"(i):);
+	return i;	
+}
 
 

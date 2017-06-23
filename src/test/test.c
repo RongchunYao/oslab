@@ -2,7 +2,6 @@
 #include "syslib.h"
 #include "string.h"
 #include "random.h"
-
 #define max 5
 
 char a[]="Hi I am producer";
@@ -55,8 +54,8 @@ void * consumer(void * arg)
 	return (void *) 0;
 }
 
-int main()
-{	
+void do_sem()
+{
 	srand(0x1010);
 	if(sem_init(&full,0)<0) {   print("sem init fail\n");  while(1);} 
 	if(sem_init(&empty,max)<0) {   print("sem init fail\n");  while(1);}
@@ -64,6 +63,26 @@ int main()
 	my_pthread(producer,(void *) a);
 	my_pthread(consumer,(void *) b);
 	my_pthread(consumer,(void *) b2);
+}
+
+void do_file()
+{
+	char buff[100];
+	FILE * fd=open("what.txt");
+	int a=open_check(fd);
+	if(a==fail_open) print("fail to open what.txt\n");
+	else 
+	{
+		lseek(fd,8,SEEK_SET);
+		read(fd,(uint8_t *)buff,100);
+		print("content is %s \n",buff);
+		close(fd);
+	}	
+}
+
+int main()
+{	
+	do_file();
 	my_exit();
 	return 0;
 }
